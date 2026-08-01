@@ -1,0 +1,63 @@
+cff-version: 1.2.0
+message: >-
+  TODO -- THE AUTHOR BLOCK BELOW IS A PLACEHOLDER AND MUST BE REPLACED BEFORE
+  THIS REPOSITORY IS CIRCULATED OR THE MANUSCRIPT IS SUBMITTED. The names,
+  affiliations and identifiers are stand-ins carried over from the draft; the
+  structure is final, the content is not. Replace every entry marked TODO,
+  then delete this notice and the corresponding block in README.md.
+title: >-
+  Missing Is Not Zero: Well-Posed Modality Removal, and What It Reveals About
+  RGB-D Segmentation Robustness
+abstract: >-
+  Multimodal semantic segmentation is evaluated for robustness to missing
+  modalities under a protocol that sets the absent modality's input to zero.
+  This work shows that protocol is not architecture-neutral, states a
+  removal-equivalence criterion separating an input sentinel from a named
+  model-level removal, and gives an inference-time test for it that requires no
+  retraining. Applied to an architecture whose depth pathway admits an exact
+  neutral element, it partitions a missing-depth gap against a same-capacity
+  reference and compares the modality-complete cost of three training recipes.
+type: software
+license: MIT
+repository-code: https://github.com/CrepuscularIRIS/ugra-rgbd-robust
+keywords:
+  - RGB-D semantic segmentation
+  - missing modality
+  - multimodal robustness
+  - model diagnostics
+  - relational-bias attention
+
+# ---------------------------------------------------------------------------
+# TODO: replace the entire `authors` list. These are the manuscript's
+# placeholder names ("University of Placeholder") and are NOT real people.
+# ---------------------------------------------------------------------------
+authors:
+  - given-names: TODO-PLACEHOLDER
+    family-names: TODO-PLACEHOLDER
+    affiliation: TODO-PLACEHOLDER
+    # orcid: https://orcid.org/0000-0000-0000-0000
+
+preferred-citation:
+  type: article
+  title: >-
+    Missing Is Not Zero: Well-Posed Modality Removal, and What It Reveals About
+    RGB-D Segmentation Robustness
+  year: 2026
+  notes: Preprint. Author list pending.
+  authors:
+    - given-names: TODO-PLACEHOLDER
+      family-names: TODO-PLACEHOLDER
+      affiliation: TODO-PLACEHOLDER
+
+references:
+  - type: conference-paper
+    title: >-
+      DFormerv2: Geometry Self-Attention for RGBD Semantic Segmentation
+    year: 2025
+    collection-title: IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)
+    notes: >-
+      Upstream architecture. This work patches its MIT-licensed reference
+      implementation (https://github.com/VCIP-RGBD/DFormer).
+    authors:
+      - given-names: Bo-Wen
+        family-names: Yin

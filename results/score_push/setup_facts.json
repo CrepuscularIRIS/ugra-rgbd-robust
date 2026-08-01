@@ -1,0 +1,141 @@
+{
+  "generated_by": "paper-forge step 1 round-2 setup harvest",
+  "arms": {
+    "small_nyu": {
+      "config_module": "local_configs.NYUDepthv2.DFormerv2_S",
+      "backbone": "DFormerv2_S",
+      "decoder": "ham",
+      "num_classes": 40,
+      "params_total": 26760461,
+      "params_total_M": 26.76,
+      "params_encoder": 25491173,
+      "params_encoder_M": 25.49,
+      "image_height": 480,
+      "image_width": 640,
+      "num_train_imgs": 795,
+      "num_eval_imgs": 654,
+      "lr": 6e-05,
+      "lr_power": 0.9,
+      "weight_decay": 0.01,
+      "batch_size": 16,
+      "nepochs": 500,
+      "warm_up_epoch": 10,
+      "niters_per_epoch": 50,
+      "optimizer": "AdamW",
+      "train_scale_array": [
+        0.5,
+        0.75,
+        1,
+        1.25,
+        1.5,
+        1.75
+      ],
+      "eval_scale_array": [
+        1
+      ],
+      "eval_flip": true,
+      "norm_mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "norm_std": [
+        0.229,
+        0.224,
+        0.225
+      ]
+    },
+    "large_nyu": {
+      "config_module": "local_configs.NYUDepthv2.DFormerv2_L",
+      "backbone": "DFormerv2_L",
+      "decoder": "ham",
+      "num_classes": 40,
+      "params_total": 95652539,
+      "params_total_M": 95.65,
+      "params_encoder": 93886611,
+      "params_encoder_M": 93.89,
+      "image_height": 480,
+      "image_width": 640,
+      "num_train_imgs": 795,
+      "num_eval_imgs": 654,
+      "lr": 6e-05,
+      "lr_power": 0.9,
+      "weight_decay": 0.01,
+      "batch_size": 12,
+      "nepochs": 500,
+      "warm_up_epoch": 10,
+      "niters_per_epoch": 67,
+      "optimizer": "AdamW",
+      "train_scale_array": [
+        0.5,
+        0.75,
+        1,
+        1.25,
+        1.5,
+        1.75
+      ],
+      "eval_scale_array": [
+        1
+      ],
+      "eval_flip": true,
+      "norm_mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "norm_std": [
+        0.229,
+        0.224,
+        0.225
+      ]
+    },
+    "small_sunrgbd": {
+      "config_module": "local_configs.SUNRGBD.DFormerv2_S",
+      "backbone": "DFormerv2_S",
+      "decoder": "ham",
+      "num_classes": 37,
+      "params_total": 27041034,
+      "params_total_M": 27.04,
+      "params_encoder": 25491173,
+      "params_encoder_M": 25.49,
+      "image_height": 480,
+      "image_width": 480,
+      "num_train_imgs": 5285,
+      "num_eval_imgs": 5050,
+      "lr": 8e-05,
+      "lr_power": 0.9,
+      "weight_decay": 0.01,
+      "batch_size": 16,
+      "nepochs": 300,
+      "warm_up_epoch": 10,
+      "niters_per_epoch": 331,
+      "optimizer": "AdamW",
+      "train_scale_array": [
+        0.5,
+        0.75,
+        1,
+        1.25,
+        1.5,
+        1.75
+      ],
+      "eval_scale_array": [
+        0.5,
+        0.75,
+        1,
+        1.25,
+        1.5
+      ],
+      "eval_flip": true,
+      "norm_mean": [
+        0.485,
+        0.456,
+        0.406
+      ],
+      "norm_std": [
+        0.229,
+        0.224,
+        0.225
+      ]
+    }
+  }
+}

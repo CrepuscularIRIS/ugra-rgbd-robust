@@ -1,0 +1,106 @@
+{
+  "phase": 2,
+  "name": "dynamics",
+  "question": "Root vs lever: how does a small prior disturbance become a large state error?",
+  "status": "complete",
+  "experiments": {
+    "P2.1_decoder_vs_sequential_patch": {
+      "source": "sequential_and_global_jspace.json exp1",
+      "n": 500,
+      "decoder_only_recovery": {
+        "0": -0.005955145938784539,
+        "1": -0.0038367145771615804,
+        "2": 0.43907684429625565,
+        "3": 0.7785292898355165
+      },
+      "sequential_recompute_recovery": {
+        "0": 0.2761055833876552,
+        "1": 0.2785862136714241,
+        "2": 0.994859081081159,
+        "3": 0.7848240573100533
+      },
+      "headline": "sequential stage2 recovery \u22480.995; stage3 \u22480.78; stage0/1 \u22480.28"
+    },
+    "P2.2_geo_vs_content_interchange": {
+      "source": "T2_geo_routing_vs_content.json",
+      "n": 100,
+      "combinations": {
+        "geoC_contentC": {
+          "miou": 0.5534222722053528,
+          "recovery_vs_MM": 1.0
+        },
+        "geoM_contentM": {
+          "miou": 0.49362626671791077,
+          "recovery_vs_MM": 0.0
+        },
+        "geoC_contentM": {
+          "miou": 0.49556857347488403,
+          "recovery_vs_MM": 0.032482215846026334
+        },
+        "geoM_contentC": {
+          "miou": 0.5552763938903809,
+          "recovery_vs_MM": 1.0310074505799132
+        }
+      },
+      "headline": "clean geo + miss content \u22483% recovery; miss geo + clean content \u2248100%"
+    },
+    "P2.3_block_error_growth": {
+      "source": "T3_block_error_growth.json",
+      "n": 60,
+      "n_blocks": 29,
+      "stage_means": {
+        "0": {
+          "mean_cosine": 0.9962584972381592,
+          "mean_l2": 30.94066611925761,
+          "blocks": "0-2"
+        },
+        "1": {
+          "mean_cosine": 0.9932940602302551,
+          "mean_l2": 64.47920513153076,
+          "blocks": "3-6"
+        },
+        "2": {
+          "mean_cosine": 0.9675762255986532,
+          "mean_l2": 148.01937908596463,
+          "blocks": "7-24"
+        },
+        "3": {
+          "mean_cosine": 0.9579876810312271,
+          "mean_l2": 87.56955337524414,
+          "blocks": "25-28"
+        }
+      },
+      "headline": "gradual stage2 drift cos 0.99\u21920.94; stage3 does not dominate growth"
+    },
+    "P2.4_statistics_channel": {
+      "source": "T4_statistics_counterfactual.json",
+      "n": 100,
+      "counterfactuals": {
+        "match_mean_std_s3": {
+          "miou": 0.4992855191230774,
+          "recovery": 0.0806020644354082
+        },
+        "match_norm_s3": {
+          "miou": 0.49551573395729065,
+          "recovery": 0.017296215201751643
+        },
+        "match_mean_std_all": {
+          "miou": 0.5026402473449707,
+          "recovery": 0.13693787926180795
+        },
+        "dir_only_s3": {
+          "miou": 0.495983749628067,
+          "recovery": 0.025155583359399436
+        }
+      },
+      "headline": "mean/std all stages \u226414% recovery; norm-only \u22482%"
+    }
+  },
+  "hypotheses_status": {
+    "H1_disturbance_integration": "supported",
+    "kernel_as_primary_repair_lever": "demoted",
+    "statistics_as_primary": "killed",
+    "stage3_amplification_as_feature_drift": "coordinate_contested"
+  },
+  "key_structural_fact": "Root cause (false prior) and repair lever (state reset at stage2) have come apart"
+}

@@ -1,0 +1,10 @@
+{
+  "checkpoint": "epoch~5 best_n7c4_m3_screen.pth",
+  "note": "EARLY probe (ep5, ~5 tiny-LR epochs; B undertrained). Definitive re-probe pending a later ckpt (~ep25-50).",
+  "PCT1_boundary_F1": {"ep0": 0.0795, "ep5": 0.1063, "delta": 0.0268, "need_delta": 0.10, "verdict": "KILL_early"},
+  "PCT2_planar_meanB": {"value": 0.4977, "need_lt": 0.10, "verdict": "KILL_early"},
+  "PCT3_missing_entropy": {"value": 0.9979, "need_gt": 0.30, "verdict": "PASS"},
+  "epoch4_identity_proxy_clean_miou": 55.35,
+  "baseline_clean_miou": 55.72,
+  "kill_switch_ep50_clean": 56.0
+}

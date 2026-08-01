@@ -1,0 +1,16 @@
+{
+  "method": "HHD+GRP",
+  "epochs": 50,
+  "lr": 6e-05,
+  "lam_bin": 0.2,
+  "lam_rank": 0.1,
+  "geo_ratio": 0.5,
+  "aug_p": 0.5,
+  "aux_warmup": 10,
+  "seed": 20260721,
+  "niters_per_epoch": 50,
+  "n_hhd_params": 236,
+  "n_grp_params": 34056,
+  "use_amp": true,
+  "timestamp": "2026-07-23 07:09:14"
+}

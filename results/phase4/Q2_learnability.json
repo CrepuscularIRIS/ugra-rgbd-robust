@@ -1,0 +1,15 @@
+{
+  "n_train": 80,
+  "n_test": 80,
+  "cluster_k": 4,
+  "cluster_acc_train": 1.0,
+  "cluster_acc_test": 0.3375000059604645,
+  "cluster_chance": 0.25,
+  "top_sv_cosine_train": 0.9999995231628418,
+  "top_sv_cosine_test": 0.29014530777931213,
+  "translator_clean_miou": 0.48468995094299316,
+  "translator_missing_miou": 0.44289159774780273,
+  "translator_miou": 0.4448818266391754,
+  "translator_recovery": 0.047615007272623563,
+  "n_translator_eval": 80
+}

@@ -1,0 +1,97 @@
+{
+  "model_tag": "dropout_rgbmiss",
+  "checkpoint": "/home/lingxufeng/workspace/ugra-rgbd-robust/repos/DFormer/checkpoints/NYUDepthv2_DFormerv2_S_20260726-065731/latest.pth",
+  "config": "local_configs.NYUDepthv2.DFormerv2_S",
+  "dataset": "NYUDepthv2",
+  "eval_split": "full",
+  "n_val_images": 654,
+  "num_classes": 40,
+  "eval_crop_size": [
+    480,
+    640
+  ],
+  "seed": 20260721,
+  "sliding": true,
+  "flip": true,
+  "amp": "fp16",
+  "val_batch_size": 16,
+  "ms_scales": [
+    0.5,
+    0.75,
+    1.0,
+    1.25,
+    1.5
+  ],
+  "protocol": {
+    "single": "evaluate_msf(scales=[1.0]): single-scale, flip, sliding, amp fp16",
+    "ms": "evaluate_msf(scales=[0.5, 0.75, 1.0, 1.25, 1.5]): flip, sliding, amp fp16"
+  },
+  "corruption_kwargs": {
+    "entire_missing": "zeros_like(normalized_depth)",
+    "holes": {
+      "num_holes": 3,
+      "hole_frac": 0.15,
+      "seed": 20260721
+    },
+    "gaussian": {
+      "sigma": 0.15,
+      "seed": 20260721
+    }
+  },
+  "results": {
+    "single": {
+      "rgb_missing": {
+        "miou": 0.63,
+        "macc": 2.51,
+        "mf1": 1.19,
+        "ious": [
+          10.260000228881836,
+          4.78000020980835,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.05000000074505806,
+          0.0,
+          0.0,
+          0.0,
+          3.450000047683716,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.019999999552965164,
+          0.0,
+          0.0,
+          0.7699999809265137,
+          0.0,
+          1.059999942779541,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.10000000149011612,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.20000000298023224,
+          0.0,
+          0.0,
+          0.0,
+          1.4299999475479126,
+          3.0899999141693115
+        ],
+        "seconds": 41.5,
+        "mpa_pixel_gated_frac": null
+      }
+    }
+  },
+  "summary": {},
+  "timestamp": "2026-07-27 01:45:50",
+  "torch_version": "2.8.0+cu128"
+}

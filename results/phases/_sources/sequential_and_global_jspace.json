@@ -1,0 +1,138 @@
+{
+  "seconds": 171.5642261505127,
+  "exp1_sequential_recompute_patching": {
+    "n": 500,
+    "clean_miou": 0.544921338558197,
+    "missing_miou": 0.48288097977638245,
+    "decoder_only_recovery": {
+      "0": {
+        "miou": 0.4825115203857422,
+        "recovery": -0.005955145938784539
+      },
+      "1": {
+        "miou": 0.4826429486274719,
+        "recovery": -0.0038367145771615804
+      },
+      "2": {
+        "miou": 0.5101214647293091,
+        "recovery": 0.43907684429625565
+      },
+      "3": {
+        "miou": 0.5311812162399292,
+        "recovery": 0.7785292898355165
+      }
+    },
+    "sequential_recompute_recovery": {
+      "0": {
+        "miou": 0.5000106692314148,
+        "recovery": 0.2761055833876552
+      },
+      "1": {
+        "miou": 0.5001645684242249,
+        "recovery": 0.2785862136714241
+      },
+      "2": {
+        "miou": 0.5446023941040039,
+        "recovery": 0.994859081081159
+      },
+      "3": {
+        "miou": 0.5315717458724976,
+        "recovery": 0.7848240573100533
+      }
+    }
+  },
+  "exp2_global_jspace": {
+    "n_test": 500,
+    "n_train_basis_images": 400,
+    "stage": 3,
+    "clean_miou": 0.5446460843086243,
+    "missing_miou": 0.4827500879764557,
+    "full_stage3_clean_patch": {
+      "miou": 0.5316663980484009,
+      "recovery": 0.790298451767912
+    },
+    "per_image_oracle": {
+      "1": {
+        "miou": 0.5068601965904236,
+        "recovery": 0.3895261413125907
+      },
+      "2": {
+        "miou": 0.5151609778404236,
+        "recovery": 0.5236346740430982
+      },
+      "4": {
+        "miou": 0.524547278881073,
+        "recovery": 0.6752810097814756
+      },
+      "8": {
+        "miou": 0.5285148024559021,
+        "recovery": 0.7393808516119091
+      },
+      "16": {
+        "miou": 0.5309332609176636,
+        "recovery": 0.7784537901713383
+      },
+      "32": {
+        "miou": 0.5305817723274231,
+        "recovery": 0.7727750934693062
+      }
+    },
+    "global_basis_oracle_coeffs": {
+      "1": {
+        "miou": 0.4840207099914551,
+        "recovery": 0.020528339315850422
+      },
+      "2": {
+        "miou": 0.4861961901187897,
+        "recovery": 0.055675687387602105
+      },
+      "4": {
+        "miou": 0.4895896911621094,
+        "recovery": 0.11050154438016549
+      },
+      "8": {
+        "miou": 0.49403926730155945,
+        "recovery": 0.18238949195550067
+      },
+      "16": {
+        "miou": 0.5075576901435852,
+        "recovery": 0.4007949404998351
+      },
+      "32": {
+        "miou": 0.5170984268188477,
+        "recovery": 0.5549363590184339
+      }
+    },
+    "random_basis_oracle_coeffs": {
+      "1": {
+        "miou": 0.48334813117980957,
+        "recovery": 0.009662066026766046
+      },
+      "2": {
+        "miou": 0.4823508858680725,
+        "recovery": -0.006449562686427029
+      },
+      "4": {
+        "miou": 0.483546644449234,
+        "recovery": 0.012869272973708221
+      },
+      "8": {
+        "miou": 0.4838669002056122,
+        "recovery": 0.01804336783211396
+      },
+      "16": {
+        "miou": 0.4845167100429535,
+        "recovery": 0.028541782525272223
+      },
+      "32": {
+        "miou": 0.4853401184082031,
+        "recovery": 0.04184487826721268
+      }
+    }
+  },
+  "interpretation_notes": {
+    "exp1": "sequential recompute = true backbone path; decoder_only = previous method",
+    "exp2": "global uses train-learned B + oracle projection of test delta; not a learned coeff head",
+    "success_criterion_exp2": "oracle_k8 > global_k8 >> random_k8; global recovers 50-70% of gap is strong"
+  }
+}

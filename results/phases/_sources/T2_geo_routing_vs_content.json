@@ -1,0 +1,29 @@
+{
+  "n": 100,
+  "clean_like_miou_geoC_contentC": 0.5534222722053528,
+  "missing_like_miou_geoM_contentM": 0.49362626671791077,
+  "combinations": {
+    "geoC_contentC": {
+      "miou": 0.5534222722053528,
+      "recovery_vs_MM": 1.0
+    },
+    "geoM_contentM": {
+      "miou": 0.49362626671791077,
+      "recovery_vs_MM": 0.0
+    },
+    "geoC_contentM": {
+      "miou": 0.49556857347488403,
+      "recovery_vs_MM": 0.032482215846026334
+    },
+    "geoM_contentC": {
+      "miou": 0.5552763938903809,
+      "recovery_vs_MM": 1.0310074505799132
+    }
+  },
+  "definitions": {
+    "geoC_contentC": "Geo from clean depth; block inputs from clean forward",
+    "geoM_contentM": "Geo from missing depth; block inputs from missing forward",
+    "geoC_contentM": "Geo from clean depth; block inputs from missing forward (routing fix attempt)",
+    "geoM_contentC": "Geo from missing depth; block inputs from clean forward (content keep, routing broken)"
+  }
+}

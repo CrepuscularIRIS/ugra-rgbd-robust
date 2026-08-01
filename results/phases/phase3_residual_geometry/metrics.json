@@ -1,0 +1,111 @@
+{
+  "phase": 3,
+  "name": "residual_geometry",
+  "question": "Is the residual endpoint a shared law, or a trajectory-specific shadow?",
+  "status": "complete",
+  "experiments": {
+    "P3.1_per_image_vs_global_rank": {
+      "source": "sequential_and_global_jspace + c1_c7_spatial + T7",
+      "per_image_oracle_k8_recovery_n500": 0.7393808516119091,
+      "global_energy_k8_recovery_n500": 0.18238949195550067,
+      "global_energy_k32_recovery_n500": 0.5549363590184339,
+      "random_k8_recovery": 0.01804336783211396,
+      "full_stage3_patch_recovery": 0.790298451767912,
+      "T7_task_weighted_k8_recovery": 0.3020835197786451,
+      "T7_energy_k8_recovery": 0.21520614622015252,
+      "T7_oracle_k8_recovery": 0.8694454651411316,
+      "headline": "per-image k8 strong (~74-87%); global k8 weak (~18-22%); task PCA ~30%"
+    },
+    "P3.2_principal_angles": {
+      "source": "T6_subspace_angles.json",
+      "n_images": 100,
+      "k": 8,
+      "stage": 3,
+      "n_pairs": 200,
+      "mean_principal_angle_deg": 72.67681121826172,
+      "std_principal_angle_deg": 2.7550642490386963,
+      "median_principal_angle_deg": 72.96491241455078,
+      "p25_principal_angle_deg": 71.385498046875,
+      "p75_principal_angle_deg": 74.62928771972656,
+      "affinity_mean_offdiag": 0.12058694660663605,
+      "spectral_kmeans_k4_cluster_sizes": [
+        11,
+        41,
+        31,
+        17
+      ],
+      "headline": "mean principal angle ~73\u00b0; affinity 0.12 \u2014 near-orthogonal per-image subspaces"
+    },
+    "P3.3_corruption_overlap": {
+      "source": "T9_corruption_subspace_overlap.json",
+      "k": 16,
+      "pairwise": {
+        "entire_missing__entire_missing": {
+          "mean_principal_angle_deg": 0.0169288981705904,
+          "projector_overlap_fro_over_k": 0.9999998211860657
+        },
+        "entire_missing__holes": {
+          "mean_principal_angle_deg": 41.65900421142578,
+          "projector_overlap_fro_over_k": 0.5623748898506165
+        },
+        "entire_missing__gaussian": {
+          "mean_principal_angle_deg": 48.018123626708984,
+          "projector_overlap_fro_over_k": 0.47133883833885193
+        },
+        "holes__holes": {
+          "mean_principal_angle_deg": 0.01109627541154623,
+          "projector_overlap_fro_over_k": 1.0
+        },
+        "holes__gaussian": {
+          "mean_principal_angle_deg": 51.4234504699707,
+          "projector_overlap_fro_over_k": 0.4300031065940857
+        },
+        "gaussian__gaussian": {
+          "mean_principal_angle_deg": 0.04035811498761177,
+          "projector_overlap_fro_over_k": 0.9999995827674866
+        }
+      },
+      "headline": "partial overlap 0.43\u20130.56 across missing/holes/gaussian at k=16"
+    },
+    "P3.4_trust_direction_negative": {
+      "source": "c7_trust_steer.json",
+      "raw": {
+        "clean_miou": 0.5449824333190918,
+        "entire_missing_miou": 0.48329052329063416,
+        "C7": {
+          "0.0": {
+            "miou": 0.4828479290008545,
+            "recovery": -0.007174267899559284
+          },
+          "0.5": {
+            "miou": 0.48250147700309753,
+            "recovery": -0.01279010954876652
+          },
+          "1.0": {
+            "miou": 0.4830892086029053,
+            "recovery": -0.003263226695947947
+          },
+          "2.0": {
+            "miou": 0.48306018114089966,
+            "recovery": -0.0037337496865998045
+          },
+          "-0.5": {
+            "miou": 0.48250827193260193,
+            "recovery": -0.012679966589969165
+          },
+          "-1.0": {
+            "miou": 0.48270297050476074,
+            "recovery": -0.009523984353902852
+          }
+        }
+      },
+      "headline": "GAP mean-difference steering does not recover mIoU"
+    }
+  },
+  "hypotheses_status": {
+    "H2_shared_law_in_generator": "supported_as_reading",
+    "small_shared_dictionary_k8": "killed",
+    "PCA_wrong_objective_as_primary": "demoted_secondary",
+    "unified_corruption_residual_space": "partial_only"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "phase": 1,
+  "name": "phenomenon",
+  "question": "What collapses, for which capacity, under which depth transforms?",
+  "status": "complete",
+  "experiments": {
+    "P1.1_base_gap": {
+      "source": "pipeline_results / sequential n=500",
+      "clean_miou": 0.5449,
+      "entire_missing_miou": 0.4829,
+      "delta_pt": 6.2,
+      "protocol": "single-scale NYU val"
+    },
+    "P1.2_capacity_discontinuity": {
+      "source": "T1_depth_dependence.json",
+      "n": 200,
+      "models": {
+        "S": {
+          "strict_ok": true,
+          "clean_miou": 0.5307732820510864,
+          "entire_missing_miou": 0.4660399556159973,
+          "delta": 0.06473332643508911,
+          "feat_l1_clean_vs_missing": 0.13978789580753073,
+          "miou_ablations": {
+            "clean": 0.5307732820510864,
+            "entire_missing": 0.4660399556159973,
+            "zeros": 0.46591195464134216,
+            "constant_half": 0.46711230278015137,
+            "inverted": 0.5319072008132935,
+            "random": 0.4640091061592102,
+            "noise_sigma0_5": 0.5157375335693359
+          }
+        },
+        "B": {
+          "strict_ok": true,
+          "clean_miou": 0.5453182458877563,
+          "entire_missing_miou": 0.5438744425773621,
+          "delta": 0.0014438033103942871,
+          "feat_l1_clean_vs_missing": 0.012966845012269914,
+          "miou_ablations": {
+            "clean": 0.5453182458877563,
+            "entire_missing": 0.5438744425773621,
+            "zeros": 0.5439037680625916,
+            "constant_half": 0.5436882972717285,
+            "inverted": 0.545076310634613,
+            "random": 0.5422994494438171,
+            "noise_sigma0_5": 0.5452527403831482
+          }
+        },
+        "L": {
+          "strict_ok": true,
+          "clean_miou": 0.5528039932250977,
+          "entire_missing_miou": 0.5515963435173035,
+          "delta": 0.0012076497077941895,
+          "feat_l1_clean_vs_missing": 0.01138997359725181,
+          "miou_ablations": {
+            "clean": 0.5528039932250977,
+            "entire_missing": 0.5515963435173035,
+            "zeros": 0.550987184047699,
+            "constant_half": 0.5507168173789978,
+            "inverted": 0.5519904494285583,
+            "random": 0.5505440831184387,
+            "noise_sigma0_5": 0.5521160364151001
+          }
+        }
+      },
+      "headline": "S \u0394\u22486.5pt; B/L \u0394\u22480.1pt under strict load"
+    },
+    "P1.3_relational_ablations_S": {
+      "source": "T1 S ablations",
+      "equivalence_class_collapse": [
+        "entire_missing",
+        "zeros",
+        "constant_half",
+        "random"
+      ],
+      "clean_equivalent": [
+        "inverted"
+      ],
+      "intermediate": [
+        "noise_sigma0_5"
+      ],
+      "interpretation_label": "candidate: model reads relational depth field (Final.md H6)"
+    }
+  },
+  "hypotheses_status": {
+    "H3_reliance_bifurcation": "confirmed_as_phenomenon",
+    "H4_B_L_immunity_mechanism": "open_confounded",
+    "H5_task_sufficiency": "open",
+    "H6_relational_reading": "supported_by_ablation_pattern"
+  }
+}

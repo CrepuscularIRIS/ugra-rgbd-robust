@@ -1,0 +1,31 @@
+{
+  "method": "LSCA",
+  "ckpt_init": "checkpoints/trained/DFormerv2_Small_NYU.pth",
+  "epochs": 40,
+  "train_batch": 8,
+  "lr": 6e-05,
+  "p_drop_max": 0.3,
+  "p_aug": 0.5,
+  "cons_weight": 0.25,
+  "n_stage2_blocks": 18,
+  "seed": 20260721,
+  "niters_per_epoch": 50,
+  "aug": {
+    "p_drop": 0.3,
+    "p_aug": 0.5,
+    "noise_sigma": 0.08,
+    "quant_levels": 8,
+    "aug_weights": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "aug_set": [
+      "invert",
+      "quantize8",
+      "mild_noise"
+    ],
+    "anchor": "Q1b structureless==missing; Q5 invert/quantize8 clean-equivalent"
+  },
+  "timestamp": "2026-07-22 04:39:17"
+}

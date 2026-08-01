@@ -1,0 +1,910 @@
+diff --git a/models/builder.py b/models/builder.py
+old mode 100644
+new mode 100755
+index 34b43a3..8433c0a
+--- a/models/builder.py
++++ b/models/builder.py
+@@ -8,6 +8,7 @@ from functools import partial
+ 
+ from utils.engine.logger import get_logger
+ import warnings
++import os
+ 
+ # from mmcv.cnn import MODELS as MMCV_MODELS
+ # from mmcv.cnn.bricks.registry import ATTENTION as MMCV_ATTENTION
+@@ -184,7 +185,37 @@ class EncoderDecoder(nn.Module):
+             self.aux_index = 2
+             self.aux_rate = 0.4
+             self.aux_head = FCNHead(self.channels[2], cfg.num_classes, norm_layer=norm_layer)
++        elif cfg.decoder == "UniPiDiT":
++            logger.info("Using UniPiDiT Decoder (K-step diffusion-style)")
++            from .decoders.unipidt_head import UniPiDiTHead as DecoderHead
+ 
++            self.decode_head = DecoderHead(
++                in_channels=self.channels,
++                num_classes=cfg.num_classes,
++                hidden_dim=getattr(cfg, "decoder_embed_dim", 512),
++                steps=getattr(cfg, "K_steps", 4),
++                nheads=getattr(cfg, "nheads", 8),
++                mlp_ratio=getattr(cfg, "mlp_ratio", 4.0),
++                use_dydit=getattr(cfg, "use_dydit", False),
++                sdt_thresh=getattr(cfg, "dydit_sdt_thresh", 0.6),
++                sdt_temp=getattr(cfg, "dydit_sdt_temp", 10.0),
++                return_all=getattr(cfg, "return_all_steps", True),
++            )
++        elif cfg.decoder == "CMaGAE":
++            logger.info("Using CMaGAE Decoder (K-step iterative encoder with dynamic geometry)")
++            from .decoders.cmagae_head import CMaGAEHead as DecoderHead
++
++            self.decode_head = DecoderHead(
++                in_channels=self.channels,
++                num_classes=cfg.num_classes,
++                hidden_dim=getattr(cfg, "decoder_embed_dim", 512),
++                steps=getattr(cfg, "K_steps", 4),
++                nheads=getattr(cfg, "nheads", 8),
++                mlp_ratio=getattr(cfg, "mlp_ratio", 4.0),
++                window=getattr(cfg, "window_size", 7),
++                max_flow=getattr(cfg, "max_flow", 1.5),
++                tbptt_detach_every=getattr(cfg, "tbptt_detach_every", 0),
++            )
+         else:
+             logger.info("No decoder(FCN-32s)")
+             from .decoders.fcnhead import FCNHead
+@@ -230,25 +261,152 @@ class EncoderDecoder(nn.Module):
+         x = self.backbone(rgb, modal_x)
+         if len(x) == 2:  # if output is (rgb,depth) only use rgb
+             x = x[0]
+-        out = self.decode_head.forward(x)
+-        out = F.interpolate(out, size=orisize[-2:], mode="bilinear", align_corners=False)
++        # CMaGAE 解码器需要深度图参与动态几何先验
++        if getattr(self.cfg, "decoder", "") == "CMaGAE":
++            depth_1ch = modal_x[:, 0:1] if modal_x is not None and modal_x.dim() == 4 else modal_x
++            out = self.decode_head.forward(x, depth_1ch)
++        else:
++            out = self.decode_head.forward(x)
++        if isinstance(out, dict) and "pred" in out:
++            logits = out["pred"]
++        else:
++            logits = out
++        # 记录迭代统计日志（仅主进程）
++        try:
++            if isinstance(out, dict) and os.environ.get("LOCAL_RANK", "0") == "0":
++                steps = len(out.get("all_masks", []))
++                msg = f"Decode out: steps={steps} logits={tuple(logits.shape)}"
++                if "flows" in out and isinstance(out["flows"], list) and len(out["flows"]) > 0:
++                    flow_means = []
++                    for f in out["flows"]:
++                        try:
++                            flow_means.append(float(f.detach().abs().mean().item()))
++                        except Exception:
++                            pass
++                    if flow_means:
++                        msg += f" | flow_mae={['%.4f'%v for v in flow_means]}"
++                if "confs" in out and isinstance(out["confs"], list) and len(out["confs"]) > 0:
++                    conf_means = []
++                    for c in out["confs"]:
++                        try:
++                            conf_means.append(float(c.detach().mean().item()))
++                        except Exception:
++                            pass
++                    if conf_means:
++                        msg += f" | conf_mean={['%.4f'%v for v in conf_means]}"
++                if os.environ.get("PRINT_ADV_LOG", "0") == "1":
++                    logger.info(msg)
++                # 缓存至属性，供外部写入TB
++                try:
++                    self.last_decode_stats = {
++                        "flow_mae": flow_means if 'flow_means' in locals() else None,
++                        "conf_mean": conf_means if 'conf_means' in locals() else None,
++                        "steps": steps,
++                    }
++                except Exception:
++                    pass
++        except Exception as _:
++            pass
++        logits = F.interpolate(logits, size=orisize[-2:], mode="bilinear", align_corners=False)
+         if self.aux_head:
+             aux_fm = self.aux_head(x[0][self.aux_index])
+             aux_fm = F.interpolate(aux_fm, size=orisize[2:], mode="bilinear", align_corners=False)
+-            return out, aux_fm
+-        return out
++            return logits, aux_fm, out if isinstance(out, dict) else None
++        return logits, None, out if isinstance(out, dict) else None
+ 
+     def forward(self, rgb, modal_x=None, label=None):
+         # print('builder',rgb.shape,modal_x.shape)
+-        if self.aux_head:
+-            out, aux_fm = self.encode_decode(rgb, modal_x)
+-        else:
+-            out = self.encode_decode(rgb, modal_x)
++        logits, aux_fm, raw_out = self.encode_decode(rgb, modal_x)
+         if label is not None:
+-            loss = self.criterion(out, label.long())[label.long() != self.cfg.background].mean()
+-            if self.aux_head:
++            loss = self.criterion(logits, label.long())[label.long() != self.cfg.background].mean()
++            if self.aux_head and aux_fm is not None:
+                 loss += (
+                     self.aux_rate * self.criterion(aux_fm, label.long())[label.long() != self.cfg.background].mean()
+                 )
++            # 组合 DPCR（可选）
++            if getattr(self.cfg, "use_dpcr", False) and isinstance(raw_out, dict) and ("all_masks" in raw_out):
++                try:
++                    from models.losses.dpcr import DPCRLoss
++
++                    depth = modal_x[:, 0:1] if modal_x.dim() == 4 else modal_x  # [B,1,H,W]
++                    # 归一化到[0,1]
++                    d_min = depth.amin(dim=(2, 3), keepdim=True)
++                    d_max = depth.amax(dim=(2, 3), keepdim=True)
++                    depth_n = (depth - d_min) / (d_max - d_min + 1e-8)
++                    dpcr = DPCRLoss(
++                        c=getattr(self.cfg, "dpcr_c", 3e-4),
++                        tv_alpha=getattr(self.cfg, "dpcr_tv_alpha", 0.1),
++                        edge_tau=getattr(self.cfg, "dpcr_edge_tau", 0.05),
++                        edge_k=getattr(self.cfg, "dpcr_edge_k", 10.0),
++                        sigma_schedule=getattr(self.cfg, "dpcr_sigma_schedule", "cosine"),
++                        sigma_min=getattr(self.cfg, "dpcr_sigma_min", 0.12),
++                        sigma_table=getattr(self.cfg, "dpcr_sigma_table", None),
++                        use_norm=getattr(self.cfg, "dpcr_use_norm", True),
++                        norm_mode=getattr(self.cfg, "dpcr_norm_mode", "ema"),
++                        ema_momentum=getattr(self.cfg, "dpcr_ema_momentum", 0.9),
++                        use_entropy=getattr(self.cfg, "dpcr_use_entropy", True),
++                        entropy_delta=getattr(self.cfg, "dpcr_entropy_delta", 0.0),
++                        entropy_weight=getattr(self.cfg, "dpcr_entropy_weight", 1.0),
++                        entropy_warmup_iters=getattr(self.cfg, "dpcr_entropy_warmup_iters", 0),
++                        entropy_ramp_iters=getattr(self.cfg, "dpcr_entropy_ramp_iters", 0),
++                        entropy_temp=getattr(self.cfg, "dpcr_entropy_temp", 1.0),
++                        entropy_apply_last_step=getattr(self.cfg, "dpcr_entropy_apply_last_step", True),
++                        damp_gamma=getattr(self.cfg, "dpcr_damp_gamma", None),
++                        sample_mode=getattr(self.cfg, "dpcr_sample_mode", "none"),
++                        sample_temp=getattr(self.cfg, "dpcr_sample_temp", 2.0),
++                        sample_every=getattr(self.cfg, "dpcr_sample_every", 0),
++                        flops_target=getattr(self.cfg, "flops_target", None),
++                        flops_weight=getattr(self.cfg, "flops_weight", 0.0),
++                    )
++                    dpcr = dpcr.to(depth_n.device)
++                    masks_all = raw_out.get("all_masks", [])
++                    if isinstance(masks_all, list) and len(masks_all) > 0:
++                        mh, mw = masks_all[0].shape[-2], masks_all[0].shape[-1]
++                        depth_for_dpcr = F.interpolate(depth_n, size=(mh, mw), mode="bilinear", align_corners=False)
++                        # 传入global_step用于熵项退火等
++                        gs = getattr(self, "global_step", None)
++                        L_dpcr, _logs = dpcr(
++                            masks_all,
++                            depth_for_dpcr,
++                            None,
++                            gs if isinstance(gs, int) else None,
++                            raw_out.get("flops_ratio", None),
++                        )
++                        loss = loss + L_dpcr
++                        # 打印DPCR日志（仅主进程）
++                        if os.environ.get("LOCAL_RANK", "0") == "0":
++                            try:
++                                # 汇总若干关键项
++                                K = len(masks_all)
++                                keys = [f"R_sdf_{K}", f"R_edge_{K}", f"R_occ_{K}"]
++                                if self.cfg.dpcr_use_entropy:
++                                    keys.append(f"R_ent_{K}")
++                                sigmas = [ _logs.get(f"sigma_{i}") for i in range(1, K+1) ]
++                                parts = [ f"{k}={_logs[k]:.4f}" for k in keys if k in _logs ]
++                                if "L_flops" in _logs:
++                                    parts.append(f"L_flops={_logs['L_flops']:.4f}")
++                                    parts.append(f"flops_mean={_logs.get('flops_mean', 0.0):.4f}")
++                                if os.environ.get("PRINT_ADV_LOG", "0") == "1":
++                                    logger.info(
++                                        "DPCR: enabled K=%d L_dpcr=%.4f | %s | sigmas=%s"
++                                        % (K, float(L_dpcr.detach().item()), " ".join(parts), str([f"{s:.3f}" if s is not None else "-" for s in sigmas]))
++                                    )
++                                # 缓存至属性，供外部写入TB
++                                try:
++                                    last_keys = {k: _logs.get(k) for k in keys if k in _logs}
++                                    self.last_dpcr_logs = {
++                                        "L_dpcr": float(L_dpcr.detach().item()),
++                                        "sigmas": sigmas,
++                                        **{k: float(v) for k, v in last_keys.items() if v is not None},
++                                    }
++                                    if "L_flops" in _logs:
++                                        self.last_dpcr_logs["L_flops"] = float(_logs["L_flops"])
++                                        self.last_dpcr_logs["flops_mean"] = float(_logs.get("flops_mean", 0.0))
++                                except Exception:
++                                    pass
++                            except Exception:
++                                pass
++                except Exception as e:
++                    logger.warning(f"DPCR loss skipped due to error: {e}")
+             return loss
+-        return out
++        return logits
+diff --git a/models/encoders/DFormerv2.py b/models/encoders/DFormerv2.py
+old mode 100644
+new mode 100755
+index 0652e6e..8ec359a
+--- a/models/encoders/DFormerv2.py
++++ b/models/encoders/DFormerv2.py
+@@ -112,6 +112,128 @@ def angle_transform(x, sin, cos):
+     return (x * cos) + (torch.stack([-x2, x1], dim=-1).flatten(-2) * sin)
+ 
+ 
++# =====================================================================
++# PRP (Pseudo-Depth Relational Prior) — n7 method.
++# Env-gated (PRP_ON=1). When OFF the backbone is byte-identical to baseline.
++# The pseudo-depth head reads STAGE-1 RGB-BRANCH features (never the depth
++# encoder), so d-hat is ALIVE under entire_missing (zeroed sensor depth).
++# =====================================================================
++import os as _os
++
++
++def _prp_enabled():
++    return _os.environ.get("PRP_ON", "0") == "1"
++
++
++# --- DEPTH_LAMBDA_TRAIN: global authority scale on the depth relational bias,
++# applied IN THE FORWARD, i.e.
++#   mask = weight[0]*mask_pos + (DEPTH_LAMBDA_TRAIN * weight[1])*mask_d.
++# Depth enters the attention operator ONLY through this term (V is pure RGB and
++# there is no depth encoder), so this is a single dial on the whole depth pathway:
++#   1.0 (default) => byte-identical to the standard recipe;
++#   0.0           => the depth pathway is REMOVED, leaving the spatial-only
++#                    operator. TRAINING at 0.0 yields the in-family RGB-only
++#                    reference A_R^oracle at IDENTICAL parameter count/capacity,
++#                    the control needed to split the observed missing-depth gap
++#                    into (genuine depth information) vs (excess brittleness of
++#                    an operator that was never trained).
++#
++# DELIBERATELY NOT named DEPTH_LAMBDA: the frozen eval harness
++# (scripts/eval_robust_suite.py) already implements eval-only DEPTH_LAMBDA by
++# scaling weight[1] IN PLACE at load time. Sharing one name would apply the
++# factor twice (lambda^2) whenever both paths were active. Separate names keep
++# the frozen eval harness byte-identical (hard rule #1) while giving the
++# TRAINING path its own dial.
++def _depth_lambda() -> float:
++    return float(_os.environ.get("DEPTH_LAMBDA_TRAIN", "1.0"))
++
++
++# --- POSITIONAL-ALPHA CONTROL (P2-CTRL). The matched negative control for C2.
++#
++# WHY. C2 scales the normalized depth input by alpha ~ U(alpha_min,1), which scales the DEPTH
++# bias mask_d by exactly alpha. Two rival accounts of its gain: (i) it is depth-SPECIFIC repair
++# of a corrupted operator, or (ii) it is a generic noise-injection regularizer on attention
++# logits. They are separated by applying the SAME augmentation family to a DEPTH-IRRELEVANT term
++# of the same module and functional form: the POSITIONAL bias weight[0]*mask_pos. Eval never
++# removes the positional term, so this arm is not a disqualified (n2-class) recipe.
++#
++# MATCHING MATTERS: C2 draws ONE alpha per SAMPLE and that alpha is shared across all 29
++# GeoPriorGen modules (because it scales the shared depth input). An independent draw inside each
++# module would be a DIFFERENT, weaker perturbation. So alpha is set ONCE per forward by the
++# trainer and read by every module here.
++#
++# Shapes: the positional mask is BATCH-SHARED ((n_heads,H,H) or (n_heads,HW,HW)) while the depth
++# mask is per-sample, so alpha is broadcast as (B,1,1,1,1) in the split branch and (B,1,1,1) in
++# the non-split branch.
++_POS_ALPHA = None
++
++
++def set_pos_alpha(a) -> None:
++    """Set the per-forward positional-attenuation factor (a tensor of shape (B,) or None)."""
++    global _POS_ALPHA
++    _POS_ALPHA = a
++
++
++def get_pos_alpha():
++    return _POS_ALPHA
++
++
++def _pos_weight(w0, ndim: int):
++    """w0 scaled by the current positional alpha, broadcast for a `ndim`-dim mask term."""
++    a = _POS_ALPHA
++    if a is None:
++        return w0
++    return w0 * a.reshape(-1, *([1] * (ndim - 1))).to(w0.device, w0.dtype)
++
++
++# --- PRP escape-velocity gate (n7 re-screen). A module-global ramp multiplier
++# g in [0,1] applied to w_p in the forward so the trainer can (a) hold mask_p
++# OFF during an aux-only warmup (g=0, d-hat trains, ckpt untouched) then
++# (b) ramp mask_p ON (g: 0->1) once d-hat is trained-enough. w_p itself stays a
++# LEARNABLE, warm-INIT (nonzero) parameter in a no-WD higher-LR group, so once
++# g>0 SGD is free to grow/shrink it -- the gate only controls WHEN it engages,
++# not its learned magnitude. Default 1.0 so eval/probe (no trainer) is unaffected.
++_PRP_GATE = {"g": 1.0}
++
++
++def set_prp_gate(g: float) -> None:
++    _PRP_GATE["g"] = float(g)
++
++
++def get_prp_gate() -> float:
++    return float(_PRP_GATE["g"])
++
++
++class PseudoDepthHead(nn.Module):
++    """RGB-branch pseudo-depth head. Input: stage-1 RGB features (b, h, w, c_in).
++    Output: per-image-scale-normalized inverse-depth map d-hat (b, 1, h, w).
++
++    2x [Conv3x3-BN-ReLU dim64] then a 1x1 to a single channel; a learnable
++    positive scale scalar (init 1.0) rescales the raw map. ~0.2M params.
++    Reads RGB features only => depth-invariant (P2)."""
++
++    def __init__(self, c_in, hidden=64):
++        super().__init__()
++        self.body = nn.Sequential(
++            nn.Conv2d(c_in, hidden, 3, 1, 1),
++            nn.BatchNorm2d(hidden),
++            nn.ReLU(inplace=True),
++            nn.Conv2d(hidden, hidden, 3, 1, 1),
++            nn.BatchNorm2d(hidden),
++            nn.ReLU(inplace=True),
++        )
++        self.head = nn.Conv2d(hidden, 1, 1, 1, 0)
++        self.scale = nn.Parameter(torch.ones(1))
++
++    def forward(self, x_bhwc: torch.Tensor) -> torch.Tensor:
++        # x_bhwc: (b, h, w, c) RGB-branch stage-1 features
++        x = x_bhwc.permute(0, 3, 1, 2).contiguous()  # (b, c, h, w)
++        x = self.body(x)
++        d = self.head(x)  # (b, 1, h, w) raw inverse-depth
++        d = d * self.scale
++        return d
++
++
+ class GeoPriorGen(nn.Module):
+     def __init__(self, embed_dim, num_heads, initial_value, heads_range):
+         super().__init__()
+@@ -124,6 +246,23 @@ class GeoPriorGen(nn.Module):
+         self.register_buffer("angle", angle)
+         self.register_buffer("decay", decay)
+ 
++        # --- PRP parallel pseudo-depth bias term (n7). Own learnable per-head
++        # decay_p (init == the sensor decay) and a ZERO-INIT combination weight
++        # w_p so at step 0 the combined bias == baseline exactly. Params are
++        # always constructed (so a PRP ckpt round-trips) but only USED when
++        # PRP is enabled AND a d_hat field is supplied to forward(). ---
++        self.decay_p = nn.Parameter(decay.clone(), requires_grad=True)
++        self.w_p = nn.Parameter(torch.zeros(1), requires_grad=True)
++
++    def generate_1d_pdepth_decay(self, H, W, d_grid):
++        """1d pseudo-depth decay mask (mirrors generate_1d_depth_decay but with
++        decay_p). d_grid: (b, 1, W, H) after the transpose convention used by
++        the caller. result: (b, n_heads, W, H, H)."""
++        mask = d_grid[:, :, :, :, None] - d_grid[:, :, :, None, :]
++        mask = mask.abs()
++        mask = mask * self.decay_p[:, None, None, None]
++        return mask
++
+     def generate_depth_decay(self, H: int, W: int, depth_grid):
+         """
+         generate 2d decay mask, the result is (HW)*(HW)
+@@ -170,11 +309,14 @@ class GeoPriorGen(nn.Module):
+         mask = mask * self.decay[:, None, None]
+         return mask
+ 
+-    def forward(self, HW_tuple: Tuple[int], depth_map, split_or_not=False):
++    def forward(self, HW_tuple: Tuple[int], depth_map, split_or_not=False, d_hat=None):
+         """
+         depth_map: depth patches
+         HW_tuple: (H, W)
+         H * W == l
++        d_hat: optional RGB-predicted pseudo-depth field (b,1,H0,W0); when
++               PRP is enabled and this is supplied, a parallel bias mask_p is
++               added (w_p ZERO-INIT => identical to baseline at step 0).
+         """
+         depth_map = F.interpolate(depth_map, size=HW_tuple, mode="bilinear", align_corners=False)
+ 
+@@ -191,8 +333,24 @@ class GeoPriorGen(nn.Module):
+             mask_h = self.generate_1d_decay(HW_tuple[0])
+             mask_w = self.generate_1d_decay(HW_tuple[1])
+ 
+-            mask_h = self.weight[0] * mask_h.unsqueeze(0).unsqueeze(2) + self.weight[1] * mask_d_h
+-            mask_w = self.weight[0] * mask_w.unsqueeze(0).unsqueeze(2) + self.weight[1] * mask_d_w
++            _dl = _depth_lambda()
++            _w0 = _pos_weight(self.weight[0], 5)  # split masks are (b,n_heads,W,H,H)
++            mask_h = _w0 * mask_h.unsqueeze(0).unsqueeze(2) + (_dl * self.weight[1]) * mask_d_h
++            mask_w = _w0 * mask_w.unsqueeze(0).unsqueeze(2) + (_dl * self.weight[1]) * mask_d_w
++
++            # --- PRP: parallel pseudo-depth bias, same decomposed h/w form as
++            # mask_d, own decay_p, ZERO-INIT w_p. Persists under entire_missing
++            # because d_hat is predicted from RGB (mask_d dies, mask_p lives). ---
++            if _prp_enabled() and d_hat is not None:
++                # escape-velocity gate g in [0,1]: 0 during aux-only warmup,
++                # ramps to 1 to ENGAGE mask_p once d-hat is trained. w_p stays a
++                # learnable warm-init param, so SGD still owns its magnitude.
++                g = get_prp_gate()
++                p_map = F.interpolate(d_hat, size=HW_tuple, mode="bilinear", align_corners=False)
++                mask_p_h = self.generate_1d_pdepth_decay(HW_tuple[0], HW_tuple[1], p_map.transpose(-2, -1))
++                mask_p_w = self.generate_1d_pdepth_decay(HW_tuple[1], HW_tuple[0], p_map)
++                mask_h = mask_h + g * self.w_p * mask_p_h
++                mask_w = mask_w + g * self.w_p * mask_p_w
+ 
+             geo_prior = ((sin, cos), (mask_h, mask_w))
+ 
+@@ -205,7 +363,7 @@ class GeoPriorGen(nn.Module):
+             mask = self.generate_pos_decay(HW_tuple[0], HW_tuple[1])
+ 
+             mask_d = self.generate_depth_decay(HW_tuple[0], HW_tuple[1], depth_map)
+-            mask = self.weight[0] * mask + self.weight[1] * mask_d
++            mask = _pos_weight(self.weight[0], 4) * mask + (_depth_lambda() * self.weight[1]) * mask_d
+ 
+             geo_prior = ((sin, cos), mask)
+ 
+@@ -411,11 +569,11 @@ class RGBD_Block(nn.Module):
+             self.gamma_1 = nn.Parameter(layer_init_values * torch.ones(1, 1, 1, embed_dim), requires_grad=True)
+             self.gamma_2 = nn.Parameter(layer_init_values * torch.ones(1, 1, 1, embed_dim), requires_grad=True)
+ 
+-    def forward(self, x: torch.Tensor, x_e: torch.Tensor, split_or_not=False):
++    def forward(self, x: torch.Tensor, x_e: torch.Tensor, split_or_not=False, d_hat=None):
+         x = x + self.cnn_pos_encode(x)
+         b, h, w, d = x.size()
+ 
+-        geo_prior = self.Geo((h, w), x_e, split_or_not=split_or_not)
++        geo_prior = self.Geo((h, w), x_e, split_or_not=split_or_not, d_hat=d_hat)
+         if self.layerscale:
+             x = x + self.drop_path(self.gamma_1 * self.Attention(self.layer_norm1(x), geo_prior, split_or_not))
+             x = x + self.drop_path(self.gamma_2 * self.ffn(self.layer_norm2(x)))
+@@ -477,13 +635,13 @@ class BasicLayer(nn.Module):
+         else:
+             self.downsample = None
+ 
+-    def forward(self, x, x_e):
++    def forward(self, x, x_e, d_hat=None):
+         b, h, w, d = x.size()
+         for blk in self.blocks:
+             if self.use_checkpoint:
+-                x = checkpoint.checkpoint(blk, x=x, x_e=x_e, split_or_not=self.split_or_not)
++                x = checkpoint.checkpoint(blk, x=x, x_e=x_e, split_or_not=self.split_or_not, d_hat=d_hat)
+             else:
+-                x = blk(x, x_e, split_or_not=self.split_or_not)
++                x = blk(x, x_e, split_or_not=self.split_or_not, d_hat=d_hat)
+         if self.downsample is not None:
+             x_down = self.downsample(x)
+             return x, x_down
+@@ -554,6 +712,13 @@ class dformerv2(nn.Module):
+         for i in range(3):
+             self.extra_norms.append(nn.LayerNorm(embed_dims[i + 1]))
+ 
++        # --- PRP pseudo-depth head (n7). Reads STAGE-1 RGB-branch features
++        # (embed_dims[0]). Always constructed so a PRP ckpt round-trips; only
++        # invoked in forward() when PRP is enabled. Last-predicted d_hat is
++        # stashed on self.last_dhat for the auxiliary depth loss. ---
++        self.pseudo_depth_head = PseudoDepthHead(embed_dims[0], hidden=64)
++        self.last_dhat = None
++
+         self.apply(self._init_weights)
+ 
+     def _init_weights(self, m):
+@@ -625,9 +790,23 @@ class dformerv2(nn.Module):
+ 
+         outs = []
+ 
++        # PRP: predict the pseudo-depth field once from the PATCH-EMBED RGB
++        # features (pure RGB, computed BEFORE any depth/GeoPriorGen interaction
++        # -> genuinely depth-invariant, so d_hat is ALIVE under entire_missing;
++        # P2). Inject it as a parallel bias into the stage-2 (i==2) blocks.
++        prp = _prp_enabled()
++        d_hat = None
++        self.last_dhat = None
++        if prp:
++            d_hat = self.pseudo_depth_head(x)  # x == patch_embed(rgb), (b,H0,W0,c0)
++            self.last_dhat = d_hat
++
+         for i in range(self.num_layers):
+             layer = self.layers[i]
+-            x_out, x = layer(x, x_e)
++            if prp and i == 2 and d_hat is not None:
++                x_out, x = layer(x, x_e, d_hat=d_hat)
++            else:
++                x_out, x = layer(x, x_e)
+             if i in self.out_indices:
+                 if i != 0:
+                     x_out = self.extra_norms[i - 1](x_out)
+diff --git a/utils/dataloader/dataloader.py b/utils/dataloader/dataloader.py
+index ad3e054..fc3f5ac 100644
+--- a/utils/dataloader/dataloader.py
++++ b/utils/dataloader/dataloader.py
+@@ -51,6 +51,39 @@ class TrainPre(object):
+         else:
+             modal_x = normalize(modal_x, self.norm_mean, self.norm_std)
+ 
++        # --- L2-NOF C2: env-gated legal depth-authority attenuation (TRAIN-ONLY,
++        # default off => standard recipe byte-identical). Per-sample: with prob
++        # C2_PCLEAN keep alpha=1; else alpha ~ U(C2_ALPHAMIN, 1). Scaling the
++        # normalized depth by alpha scales the GeoPriorGen depth bias
++        # mask_d = |d_i - d_j| by EXACTLY alpha (offset-invariant). alpha > 0 always
++        # => mask_d never 0 => the model NEVER visits the eval-absent (spatial-only)
++        # operator during training (Q5-legal, NOT n2). grok-gated (survival 0.67,
++        # CLAIM_STANDS); attribution +2.67 over matched plain-finetune control. ---
++        import os as _os
++        if _os.environ.get("C2_ATTEN") == "1":
++            _pc = float(_os.environ.get("C2_PCLEAN", "0.5"))
++            _am = float(_os.environ.get("C2_ALPHAMIN", "0.05"))
++            # C2_DIST selects the alpha distribution, so the promotable full-train path can also
++            # produce the ALTERNATIVE-BASELINE comparators a reviewer will demand. E[alpha] is
++            # matched across arms; only ours never reaches 0.
++            #   u005_1    (default) : U(alpha_min, 1)      -- OURS, never instantiates the absent state
++            #   bernoulli           : {0,1}, P(0)=0.475    -- ordinary modality dropout
++            #   uniform01           : U(0,1)               -- approaches the absent state
++            #   constant            : 0.525                -- separates stochasticity from mean shrinkage
++            # bernoulli/uniform01 DO visit the absent operator: they are BASELINES to compare
++            # against, never promotable as our method.
++            _dist = _os.environ.get("C2_DIST", "u005_1")
++            if np.random.rand() >= _pc:
++                if _dist == "bernoulli":
++                    _al = 0.0 if np.random.rand() < 0.475 else 1.0
++                elif _dist == "uniform01":
++                    _al = np.random.rand()
++                elif _dist == "constant":
++                    _al = 0.525
++                else:
++                    _al = _am + (1.0 - _am) * np.random.rand()
++                modal_x = modal_x * _al
++
+         # return rgb.transpose(2, 0, 1), gt, modal_x.transpose(2, 0, 1)
+ 
+         crop_size = (self.config.image_height, self.config.image_width)
+diff --git a/utils/engine/engine.py b/utils/engine/engine.py
+index 21b5631..99ad5e4 100644
+--- a/utils/engine/engine.py
++++ b/utils/engine/engine.py
+@@ -155,6 +155,20 @@ class Engine(object):
+         checkpoint = osp.join(checkpoint_dir, f"epoch-{self.state.epoch}{infor}.pth")
+         self.save_checkpoint(checkpoint)
+ 
++    def save_latest(self, checkpoint_dir):
++        """Save a rolling `latest.pth` on every eval, regardless of best mIoU.
++
++        The best-only policy silently discards the converged weights of any run whose
++        final epoch is not a new best, and loses all progress since the last best on a
++        resume. Write to a temp path and rename so an interrupted save cannot leave a
++        truncated checkpoint behind.
++        """
++        ensure_dir(checkpoint_dir)
++        final = osp.join(checkpoint_dir, "latest.pth")
++        tmp = final + ".tmp"
++        self.save_checkpoint(tmp)
++        os.replace(tmp, final)
++
+     def restore_checkpoint(self):
+         t_start = time.time()
+         if self.distributed:
+diff --git a/utils/train.py b/utils/train.py
+index 1ad8cd8..230eff0 100644
+--- a/utils/train.py
++++ b/utils/train.py
+@@ -42,9 +42,13 @@ parser.add_argument("--syncbn", default=True, action=argparse.BooleanOptionalAct
+ parser.add_argument("--mst", default=True, action=argparse.BooleanOptionalAction)
+ parser.add_argument("--amp", default=True, action=argparse.BooleanOptionalAction)
+ parser.add_argument("--val_amp", default=True, action=argparse.BooleanOptionalAction)
++parser.add_argument("--amp_dtype", type=str, default="float16", choices=["float16", "bfloat16"])
+ parser.add_argument("--pad_SUNRGBD", default=False, action=argparse.BooleanOptionalAction)
+ parser.add_argument("--use_seed", default=True, action=argparse.BooleanOptionalAction)
+ parser.add_argument("--local-rank", default=0)
++parser.add_argument("--abort_on_nan", default=True, action=argparse.BooleanOptionalAction)
++parser.add_argument("--clip_grad_norm", type=float, default=1.0)
++parser.add_argument("--nan_patience", type=int, default=3)
+ # parser.add_argument('--save_path', '-p', default=None)
+ 
+ # os.environ['MASTER_PORT'] = '169710'
+@@ -56,6 +60,14 @@ torch._dynamo.config.suppress_errors = True
+ 
+ 
+ def is_eval(epoch, config):
++    # L2-NOF: env-gated eval cadence (default preserves original behavior). Set
++    # EVAL_EVERY=N to eval every N epochs (+ ep1 + final) instead of every epoch
++    # after checkpoint_start_epoch -- avoids the slow per-epoch-eval tail. The
++    # promotable robustness numbers come from the frozen suite on saved ckpts, so
++    # training-eval cadence does not affect them.
++    _ev = int(os.environ.get("EVAL_EVERY", "0"))
++    if _ev > 0:
++        return epoch % _ev == 0 or epoch == 1 or epoch == int(config.nepochs)
+     return epoch > int(config.checkpoint_start_epoch) or epoch == 1 or epoch % 10 == 0
+ 
+ 
+@@ -169,6 +181,9 @@ with Engine(custom_parser=parser) as engine:
+         tb_dir = config.tb_dir + "/{}".format(time.strftime("%b%d_%d-%H-%M", time.localtime()))
+         generate_tb_dir = config.tb_dir + "/tb"
+         tb = SummaryWriter(log_dir=tb_dir)
++        # 高级指标单独TB
++        adv_tb_dir = config.tb_dir + "/advanced_{}".format(time.strftime("%b%d_%d-%H-%M", time.localtime()))
++        adv_tb = SummaryWriter(log_dir=adv_tb_dir)
+         engine.link_tb(tb_dir, generate_tb_dir)
+         pp = pprint.PrettyPrinter(indent=4)
+         logger.info("config: \n" + pp.pformat(config))
+@@ -239,7 +254,7 @@ with Engine(custom_parser=parser) as engine:
+                 model,
+                 device_ids=[engine.local_rank],
+                 output_device=engine.local_rank,
+-                find_unused_parameters=False,
++                find_unused_parameters=True,
+             )
+     else:
+         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+@@ -281,9 +296,11 @@ with Engine(custom_parser=parser) as engine:
+     miou, best_miou = 0.0, 0.0
+     train_timer = gpu_timer()
+     eval_timer = gpu_timer()
++    global_step = 0
+ 
+     if args.amp:
+         scaler = torch.cuda.amp.GradScaler()
++    nonfinite_streak = 0
+     for epoch in range(engine.state.epoch, config.nepochs + 1):
+         model = compiled_model
+         model.train()
+@@ -311,24 +328,99 @@ with Engine(custom_parser=parser) as engine:
+             imgs = minibatch["data"]
+             gts = minibatch["label"]
+             modal_xs = minibatch["modal_x"]
++            # 输入健壮性：若含NaN/Inf，跳过该batch
++            if not torch.isfinite(imgs).all() or not torch.isfinite(modal_xs).all():
++                logger.warning("Skip batch due to non-finite input")
++                continue
+ 
+             imgs = imgs.cuda(non_blocking=True)
+             gts = gts.cuda(non_blocking=True)
+             modal_xs = modal_xs.cuda(non_blocking=True)
++            # 首批施加微小clip以稳住早期梯度
++            if global_step == 0:
++                imgs = imgs.clamp(0.0, 1.0)
++                modal_xs = modal_xs.clamp(min=modal_xs.amin().item(), max=modal_xs.amax().item())
++
++            # --- POS_ATTEN: matched negative control for C2. Attenuate the POSITIONAL bias
++            # instead of the depth bias, same U(alpha_min,1) family, same per-sample draw
++            # SHARED across all GeoPriorGen modules (C2's alpha is shared because it scales the
++            # depth input, so an independent per-module draw would not be a matched control).
++            # Set to None when disabled => byte-identical to the standard recipe.
++            if os.environ.get("POS_ATTEN") == "1":
++                from models.encoders.DFormerv2 import set_pos_alpha
++
++                _pc = float(os.environ.get("POS_PCLEAN", "0.5"))
++                _am = float(os.environ.get("POS_ALPHAMIN", "0.05"))
++                _b = imgs.shape[0]
++                _keep = torch.rand(_b, device=imgs.device) < _pc
++                _alpha = _am + (1.0 - _am) * torch.rand(_b, device=imgs.device)
++                set_pos_alpha(torch.where(_keep, torch.ones_like(_alpha), _alpha))
+ 
+             if args.amp:
+-                with torch.autocast(device_type="cuda", dtype=torch.float16):
++                _dtype = torch.float16 if args.amp_dtype == "float16" else torch.bfloat16
++                with torch.autocast(device_type="cuda", dtype=_dtype):
++                    # 传递global_step给模型（用于DPCR退火）
++                    if hasattr(model, 'module'):
++                        setattr(model.module, 'global_step', global_step)
++                    else:
++                        setattr(model, 'global_step', global_step)
+                     loss = model(imgs, modal_xs, gts)
+             else:
++                if hasattr(model, 'module'):
++                    setattr(model.module, 'global_step', global_step)
++                else:
++                    setattr(model, 'global_step', global_step)
+                 loss = model(imgs, modal_xs, gts)
+ 
+             # reduce the whole loss over multi-gpu
+             if engine.distributed:
+                 reduce_loss = all_reduce_tensor(loss, world_size=engine.world_size)
+ 
++            # 检测非有限loss并中止
++            if args.abort_on_nan:
++                try:
++                    loss_val = float(loss.detach().item())
++                    if not (loss_val == loss_val and abs(loss_val) < float("inf")):
++                        logger.error(f"Non-finite loss detected at step {current_idx if 'current_idx' in locals() else -1}: {loss_val}")
++                        nonfinite_streak += 1
++                        if nonfinite_streak >= args.nan_patience:
++                            raise RuntimeError("Abort due to non-finite loss")
++                        else:
++                            # 跳过本步更新，继续下一步
++                            optimizer.zero_grad(set_to_none=True)
++                            continue
++                except Exception:
++                    logger.error("Non-finite loss detected (exception in reading loss)")
++                    raise
++
+             if args.amp:
+                 # Scales loss. Calls ``backward()`` on scaled loss to create scaled gradients.
+                 scaler.scale(loss).backward()
++                # 反scale以便做裁剪/检测
++                scaler.unscale_(optimizer)
++                # 梯度裁剪
++                if args.clip_grad_norm and args.clip_grad_norm > 0:
++                    total_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip_grad_norm)
++                    if args.abort_on_nan:
++                        tn = float(total_norm)
++                        if not (tn == tn and abs(tn) < float("inf")):
++                            logger.error(f"Non-finite grad norm detected: {tn}")
++                            # 定位首个出现NaN的参数
++                            try:
++                                for n, p in (model.module if hasattr(model, 'module') else model).named_parameters():
++                                    if p.grad is not None:
++                                        g = p.grad
++                                        if torch.isnan(g).any() or torch.isinf(g).any():
++                                            logger.error(f"First NaN/Inf grad at param: {n}, shape={tuple(g.shape)}")
++                                            break
++                            except Exception:
++                                pass
++                            nonfinite_streak += 1
++                            if nonfinite_streak >= args.nan_patience:
++                                raise RuntimeError("Abort due to non-finite grad norm")
++                            else:
++                                optimizer.zero_grad(set_to_none=True)
++                                continue
+                 # otherwise, optimizer.step() is skipped.
+                 scaler.step(optimizer)
+                 # Updates the scale for next iteration.
+@@ -337,6 +429,29 @@ with Engine(custom_parser=parser) as engine:
+             else:
+                 optimizer.zero_grad()
+                 loss.backward()
++                # 梯度裁剪
++                if args.clip_grad_norm and args.clip_grad_norm > 0:
++                    total_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), args.clip_grad_norm)
++                    if args.abort_on_nan:
++                        tn = float(total_norm)
++                        if not (tn == tn and abs(tn) < float("inf")):
++                            logger.error(f"Non-finite grad norm detected: {tn}")
++                            # 定位首个出现NaN的参数
++                            try:
++                                for n, p in (model.module if hasattr(model, 'module') else model).named_parameters():
++                                    if p.grad is not None:
++                                        g = p.grad
++                                        if torch.isnan(g).any() or torch.isinf(g).any():
++                                            logger.error(f"First NaN/Inf grad at param: {n}, shape={tuple(g.shape)}")
++                                            break
++                            except Exception:
++                                pass
++                            nonfinite_streak += 1
++                            if nonfinite_streak >= args.nan_patience:
++                                raise RuntimeError("Abort due to non-finite grad norm")
++                            else:
++                                optimizer.zero_grad(set_to_none=True)
++                                continue
+                 optimizer.step()
+ 
+             if not args.amp:
+@@ -346,6 +461,7 @@ with Engine(custom_parser=parser) as engine:
+                             logger.warning(f"{name} has no grad, please check")
+ 
+             current_idx = (epoch - 1) * config.niters_per_epoch + idx
++            global_step = current_idx
+             lr = lr_policy.get_lr(current_idx)
+ 
+             for i in range(len(optimizer.param_groups)):
+@@ -368,6 +484,38 @@ with Engine(custom_parser=parser) as engine:
+                     + f"lr={lr:.4e} loss={loss:.4f} total_loss={(sum_loss / (idx + 1)):.4f}"
+                 )
+ 
++            # 记录TB标量（仅主进程）
++            if ((engine.distributed and (engine.local_rank == 0)) or (not engine.distributed)):
++                try:
++                    # DPCR 标量
++                    if hasattr(model.module if engine.distributed else model, 'last_dpcr_logs'):
++                        mdl = model.module if engine.distributed else model
++                        dp = getattr(mdl, 'last_dpcr_logs', {})
++                        if isinstance(dp, dict) and len(dp) > 0:
++                            for k, v in dp.items():
++                                if k == 'sigmas':
++                                    # 展开每步sigma
++                                    for i, sv in enumerate(v, start=1):
++                                        if sv is not None:
++                                            adv_tb.add_scalar(f"train/dpcr_sigma_{i}", float(sv), current_idx)
++                                else:
++                                    adv_tb.add_scalar(f"train/{k}", float(v), current_idx)
++                    # 解码统计
++                    if hasattr(model.module if engine.distributed else model, 'last_decode_stats'):
++                        mdl = model.module if engine.distributed else model
++                        ds = getattr(mdl, 'last_decode_stats', {})
++                        if isinstance(ds, dict) and len(ds) > 0:
++                            if isinstance(ds.get('flow_mae'), list):
++                                for i, fv in enumerate(ds['flow_mae'], start=1):
++                                    adv_tb.add_scalar(f"train/flow_mae_{i}", float(fv), current_idx)
++                            if isinstance(ds.get('conf_mean'), list):
++                                for i, cv in enumerate(ds['conf_mean'], start=1):
++                                    adv_tb.add_scalar(f"train/conf_mean_{i}", float(cv), current_idx)
++                            adv_tb.add_scalar("train/steps_decode", float(ds.get('steps', 0)), current_idx)
++                except Exception:
++                    pass
++
++            # 打印概览日志
+             if ((idx + 1) % int((config.niters_per_epoch) * 0.1) == 0 or idx == 0) and (
+                 (engine.distributed and (engine.local_rank == 0)) or (not engine.distributed)
+             ):
+@@ -376,6 +524,8 @@ with Engine(custom_parser=parser) as engine:
+             del loss
+             # pbar.set_description(print_str, refresh=False)
+         logger.info(print_str)
++        # 正常步重置连续非有限计数
++        nonfinite_streak = 0
+         train_timer.stop()
+ 
+         # if (engine.distributed and (engine.local_rank == 0)) or (
+@@ -385,6 +535,13 @@ with Engine(custom_parser=parser) as engine:
+ 
+         if is_eval(epoch, config):
+             eval_timer.start()
++            # POS_ATTEN is a TRAIN-ONLY augmentation: clear it so validation runs the unperturbed
++            # operator. Leaving it set would attenuate the positional bias during eval too and
++            # silently corrupt every reported mIoU.
++            if os.environ.get("POS_ATTEN") == "1":
++                from models.encoders.DFormerv2 import set_pos_alpha
++
++                set_pos_alpha(None)
+             torch.cuda.empty_cache()
+             # if args.compile and args.mst and (not args.sliding):
+             #     model = uncompiled_model
+@@ -452,6 +609,7 @@ with Engine(custom_parser=parser) as engine:
+                                 infor="_miou_" + str(miou),
+                                 metric=miou,
+                             )
++                        engine.save_latest(config.log_dir)
+                         print("miou", miou, "best", best_miou)
+             elif not engine.distributed:
+                 with torch.no_grad():
+@@ -515,6 +673,7 @@ with Engine(custom_parser=parser) as engine:
+                         infor="_miou_" + str(miou),
+                         metric=miou,
+                     )
++                engine.save_latest(config.log_dir)
+                 print("miou", miou, "best", best_miou)
+             logger.info(f"Epoch {epoch} validation result: mIoU {miou}, best mIoU {best_miou}")
+             eval_timer.stop()
+@@ -523,8 +682,60 @@ with Engine(custom_parser=parser) as engine:
+         for i in range(engine.state.epoch + 1, config.nepochs + 1):
+             if is_eval(i, config):
+                 eval_count += 1
+-        left_time = train_timer.mean_time * (config.nepochs - engine.state.epoch) + eval_timer.mean_time * eval_count
++        # mean_time is None until the corresponding timer has stopped at least once.
++        # On a --continue_fpath resume that starts on a non-eval epoch, eval_timer has
++        # never run, so guard both terms (ETA logging only — no effect on training).
++        _train_mt = train_timer.mean_time or 0.0
++        _eval_mt = eval_timer.mean_time or 0.0
++        left_time = _train_mt * (config.nepochs - engine.state.epoch) + _eval_mt * eval_count
+         eta = (datetime.datetime.now() + datetime.timedelta(seconds=left_time)).strftime("%Y-%m-%d %H:%M:%S")
+         logger.info(
+-            f"Avg train time: {train_timer.mean_time:.2f}s, avg eval time: {eval_timer.mean_time:.2f}s, left eval count: {eval_count}, ETA: {eta}"
++            f"Avg train time: {_train_mt:.2f}s, avg eval time: {_eval_mt:.2f}s, left eval count: {eval_count}, ETA: {eta}"
+         )
++
++        # 每个epoch末（主进程）记录梯度范数（解码头）与logits梯度均值
++        if (engine.distributed and (engine.local_rank == 0)) or (not engine.distributed):
++            try:
++                dec = None
++                if hasattr(model, 'module'):
++                    dec = getattr(model.module, 'decode_head', None)
++                else:
++                    dec = getattr(model, 'decode_head', None)
++                if dec is not None:
++                    total, cnt = 0.0, 0
++                    for p in dec.parameters():
++                        if p.grad is not None:
++                            g = p.grad.detach()
++                            total += float(g.norm().item())
++                            cnt += 1
++                    if cnt > 0:
++                        adv_tb.add_scalar("train/grad_norm_decode_head", total / cnt, epoch)
++            except Exception:
++                pass
++
++            # 将高级指标同步写入单独文本日志（advanced.log）
++            try:
++                adv_log_path = os.path.join(config.log_dir, "advanced.log")
++                with open(adv_log_path, 'a') as f:
++                    line = f"step={current_idx}"
++                    mdl = model.module if engine.distributed else model
++                    if hasattr(mdl, 'last_dpcr_logs') and isinstance(mdl.last_dpcr_logs, dict):
++                        for k, v in mdl.last_dpcr_logs.items():
++                            if k == 'sigmas':
++                                for i, sv in enumerate(v, start=1):
++                                    if sv is not None:
++                                        line += f" dpcr_sigma_{i}={float(sv):.4f}"
++                            else:
++                                line += f" {k}={float(v):.6f}"
++                    if hasattr(mdl, 'last_decode_stats') and isinstance(mdl.last_decode_stats, dict):
++                        ds = mdl.last_decode_stats
++                        if isinstance(ds.get('flow_mae'), list):
++                            for i, fv in enumerate(ds['flow_mae'], start=1):
++                                line += f" flow_mae_{i}={float(fv):.6f}"
++                        if isinstance(ds.get('conf_mean'), list):
++                            for i, cv in enumerate(ds['conf_mean'], start=1):
++                                line += f" conf_mean_{i}={float(cv):.6f}"
++                        line += f" steps_decode={float(ds.get('steps', 0)):.0f}"
++                    f.write(line + "\n")
++            except Exception:
++                pass

@@ -1,0 +1,89 @@
+{
+  "phase": 4,
+  "name": "open_gates",
+  "question": "What decides the paper spine and which method families remain open?",
+  "status": "planned_not_run",
+  "gates_from_Final_md": {
+    "Q1_capacity_discontinuity_mechanism": {
+      "status": "not_run",
+      "needs": [
+        "coupling_weight_inspection_SBL",
+        "prior_amplification_on_BL",
+        "prior_disabled_condition",
+        "cross_family_eval",
+        "SUNRGBD_replication",
+        "continuous_metric_check"
+      ],
+      "train_required": false,
+      "priority": 1
+    },
+    "Q2_endpoint_predictability_T8": {
+      "status": "not_run",
+      "needs": [
+        "RGB_to_subspace_probe",
+        "RGB_to_cluster_probe",
+        "optional_coeff_predictor"
+      ],
+      "train_required": "light",
+      "priority": 2,
+      "gates": "if no \u2192 residual-repair family closed"
+    },
+    "Q3_anatomy_of_6p5pts": {
+      "status": "not_run",
+      "needs": [
+        "per_class_delta",
+        "boundary_band",
+        "uniqueness_strata",
+        "tail_class_audit"
+      ],
+      "train_required": false,
+      "priority": 3
+    },
+    "Q4_factorized_damage_law": {
+      "status": "not_run",
+      "needs": [
+        "block_subset_confinement",
+        "stage0_anomaly",
+        "resolution_sensitivity"
+      ],
+      "train_required": false,
+      "priority": 4
+    },
+    "Q5_minimal_depth_statistic": {
+      "status": "not_run",
+      "needs": [
+        "transform_sweep",
+        "sign_test",
+        "quantization_sweep"
+      ],
+      "train_required": false,
+      "priority": 5
+    },
+    "Q6_stage3_task_amplification_T5": {
+      "status": "not_run",
+      "needs": [
+        "clean_reader",
+        "missing_reader",
+        "shared_reader",
+        "cross_test_matrix"
+      ],
+      "train_required": "light",
+      "priority": 6
+    },
+    "T10_training_trajectory": {
+      "status": "not_run",
+      "needs": [
+        "intermediate_checkpoints_or_retrain"
+      ],
+      "train_required": true,
+      "priority": 7
+    }
+  },
+  "deferred_methods_not_diagnostic": [
+    "full_SAE",
+    "fiber_bundle_models",
+    "closed_loop_correction_nets",
+    "reliance_shaping_training",
+    "strict_info_theoretic_accounting"
+  ]
+}

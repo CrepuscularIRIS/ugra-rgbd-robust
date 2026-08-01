@@ -1,0 +1,258 @@
+{
+  "models": {
+    "S": {
+      "load_strict_ok": true,
+      "overall_mean_abs_weight_pos": 0.6108807317093657,
+      "overall_mean_abs_weight_depth": 1.448632478135927,
+      "overall_mean_abs_decay": 0.09272692018541796,
+      "ratio_depth_over_pos": 2.3713834844362585,
+      "stages": [
+        {
+          "stage": 0,
+          "mean_abs_weight_pos": 1.2560623089472454,
+          "mean_abs_weight_depth": 3.858563780784607,
+          "mean_abs_decay": 0.1293751746416092,
+          "n_blocks": 3,
+          "weight_depth_list": [
+            0.4274017810821533,
+            10.0534086227417,
+            1.0948809385299683
+          ]
+        },
+        {
+          "stage": 1,
+          "mean_abs_weight_pos": 1.3809856325387955,
+          "mean_abs_weight_depth": 0.8059370554983616,
+          "mean_abs_decay": 0.1293751746416092,
+          "n_blocks": 4,
+          "weight_depth_list": [
+            1.239516019821167,
+            0.5539867877960205,
+            1.2537283897399902,
+            0.17651702463626862
+          ]
+        },
+        {
+          "stage": 2,
+          "mean_abs_weight_pos": 0.39374508989405715,
+          "mean_abs_weight_depth": 1.5032220298631325,
+          "mean_abs_decay": 0.08291874080896378,
+          "n_blocks": 18,
+          "weight_depth_list": [
+            0.10473363846540451,
+            0.7869612574577332,
+            0.5285423994064331,
+            4.102144718170166,
+            2.586002826690674,
+            0.009628679603338242,
+            0.1118658110499382,
+            1.8672282695770264,
+            0.20026631653308868,
+            0.19469283521175385,
+            3.082051992416382,
+            3.5859646797180176,
+            3.1926372051239014,
+            2.125692129135132,
+            2.8724899291992188,
+            1.176236629486084,
+            0.37369808554649353,
+            0.15715913474559784
+          ]
+        },
+        {
+          "stage": 3,
+          "mean_abs_weight_pos": 0.33400003612041473,
+          "mean_abs_weight_depth": 0.03822644101455808,
+          "mean_abs_decay": 0.07272928208112717,
+          "n_blocks": 4,
+          "weight_depth_list": [
+            0.01416819728910923,
+            0.059423718601465225,
+            0.061548858880996704,
+            0.017764989286661148
+          ]
+        }
+      ]
+    },
+    "B": {
+      "load_strict_ok": true,
+      "overall_mean_abs_weight_pos": 1.0,
+      "overall_mean_abs_weight_depth": 1.0,
+      "overall_mean_abs_decay": 0.08511380586359236,
+      "ratio_depth_over_pos": 1.0,
+      "stages": [
+        {
+          "stage": 0,
+          "mean_abs_weight_pos": 1.0,
+          "mean_abs_weight_depth": 1.0,
+          "mean_abs_decay": 0.10664981603622437,
+          "n_blocks": 4,
+          "weight_depth_list": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "stage": 1,
+          "mean_abs_weight_pos": 1.0,
+          "mean_abs_weight_depth": 1.0,
+          "mean_abs_decay": 0.10664981603622437,
+          "n_blocks": 8,
+          "weight_depth_list": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "stage": 2,
+          "mean_abs_weight_pos": 1.0,
+          "mean_abs_weight_depth": 1.0,
+          "mean_abs_decay": 0.07873956859111786,
+          "n_blocks": 25,
+          "weight_depth_list": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "stage": 3,
+          "mean_abs_weight_pos": 1.0,
+          "mean_abs_weight_depth": 1.0,
+          "mean_abs_decay": 0.07272928208112717,
+          "n_blocks": 8,
+          "weight_depth_list": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ]
+    },
+    "L": {
+      "load_strict_ok": true,
+      "overall_mean_abs_weight_pos": 1.0,
+      "overall_mean_abs_weight_depth": 1.0,
+      "overall_mean_abs_decay": 0.07670002761814329,
+      "ratio_depth_over_pos": 1.0,
+      "stages": [
+        {
+          "stage": 0,
+          "mean_abs_weight_pos": 1.0,
+          "mean_abs_weight_depth": 1.0,
+          "mean_abs_decay": 0.08598653972148895,
+          "n_blocks": 4,
+          "weight_depth_list": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "stage": 1,
+          "mean_abs_weight_pos": 1.0,
+          "mean_abs_weight_depth": 1.0,
+          "mean_abs_decay": 0.08598653972148895,
+          "n_blocks": 8,
+          "weight_depth_list": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "stage": 2,
+          "mean_abs_weight_pos": 1.0,
+          "mean_abs_weight_depth": 1.0,
+          "mean_abs_decay": 0.07413183897733688,
+          "n_blocks": 25,
+          "weight_depth_list": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "stage": 3,
+          "mean_abs_weight_pos": 1.0,
+          "mean_abs_weight_depth": 1.0,
+          "mean_abs_decay": 0.07079584896564484,
+          "n_blocks": 8,
+          "weight_depth_list": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,332 @@
+{
+  "n": 200,
+  "macro_clean": 0.531455934047699,
+  "macro_missing": 0.46728330850601196,
+  "macro_delta": 0.06417262554168701,
+  "per_class_sorted_by_delta": [
+    {
+      "class_id": 35,
+      "name": "bathtub",
+      "iou_clean": 0.6642548441886902,
+      "iou_missing": 0.311393678188324,
+      "delta": 0.3528611660003662
+    },
+    {
+      "class_id": 31,
+      "name": "night stand",
+      "iou_clean": 0.4598873257637024,
+      "iou_missing": 0.24758704006671906,
+      "delta": 0.21230028569698334
+    },
+    {
+      "class_id": 33,
+      "name": "sink",
+      "iou_clean": 0.7075943350791931,
+      "iou_missing": 0.5108747482299805,
+      "delta": 0.19671958684921265
+    },
+    {
+      "class_id": 16,
+      "name": "dresser",
+      "iou_clean": 0.6870728135108948,
+      "iou_missing": 0.502772331237793,
+      "delta": 0.1843004822731018
+    },
+    {
+      "class_id": 18,
+      "name": "mirror",
+      "iou_clean": 0.5893397331237793,
+      "iou_missing": 0.4214048981666565,
+      "delta": 0.1679348349571228
+    },
+    {
+      "class_id": 13,
+      "name": "desk",
+      "iou_clean": 0.3464520275592804,
+      "iou_missing": 0.181749165058136,
+      "delta": 0.1647028625011444
+    },
+    {
+      "class_id": 11,
+      "name": "counter",
+      "iou_clean": 0.7316398024559021,
+      "iou_missing": 0.6172453761100769,
+      "delta": 0.1143944263458252
+    },
+    {
+      "class_id": 3,
+      "name": "bed",
+      "iou_clean": 0.574245035648346,
+      "iou_missing": 0.4655696451663971,
+      "delta": 0.10867539048194885
+    },
+    {
+      "class_id": 2,
+      "name": "cabinet",
+      "iou_clean": 0.5381165742874146,
+      "iou_missing": 0.43139714002609253,
+      "delta": 0.10671943426132202
+    },
+    {
+      "class_id": 17,
+      "name": "pillow",
+      "iou_clean": 0.4802398085594177,
+      "iou_missing": 0.37420618534088135,
+      "delta": 0.10603362321853638
+    },
+    {
+      "class_id": 20,
+      "name": "clothes",
+      "iou_clean": 0.28889164328575134,
+      "iou_missing": 0.21795080602169037,
+      "delta": 0.07094083726406097
+    },
+    {
+      "class_id": 30,
+      "name": "person",
+      "iou_clean": 0.7548611164093018,
+      "iou_missing": 0.6850063800811768,
+      "delta": 0.069854736328125
+    },
+    {
+      "class_id": 1,
+      "name": "floor",
+      "iou_clean": 0.8183569312095642,
+      "iou_missing": 0.7525638937950134,
+      "delta": 0.06579303741455078
+    },
+    {
+      "class_id": 34,
+      "name": "lamp",
+      "iou_clean": 0.48127904534339905,
+      "iou_missing": 0.4184609651565552,
+      "delta": 0.06281808018684387
+    },
+    {
+      "class_id": 32,
+      "name": "toilet",
+      "iou_clean": 0.6831992268562317,
+      "iou_missing": 0.6231961846351624,
+      "delta": 0.060003042221069336
+    },
+    {
+      "class_id": 14,
+      "name": "shelves",
+      "iou_clean": 0.2355465292930603,
+      "iou_missing": 0.17581233382225037,
+      "delta": 0.059734195470809937
+    },
+    {
+      "class_id": 15,
+      "name": "curtain",
+      "iou_clean": 0.6684008240699768,
+      "iou_missing": 0.6118512153625488,
+      "delta": 0.05654960870742798
+    },
+    {
+      "class_id": 5,
+      "name": "sofa",
+      "iou_clean": 0.598695695400238,
+      "iou_missing": 0.5533355474472046,
+      "delta": 0.04536014795303345
+    },
+    {
+      "class_id": 4,
+      "name": "chair",
+      "iou_clean": 0.6317472457885742,
+      "iou_missing": 0.5877335667610168,
+      "delta": 0.04401367902755737
+    },
+    {
+      "class_id": 8,
+      "name": "window",
+      "iou_clean": 0.46501120924949646,
+      "iou_missing": 0.4222041368484497,
+      "delta": 0.04280707240104675
+    },
+    {
+      "class_id": 38,
+      "name": "otherfurniture",
+      "iou_clean": 0.20906923711299896,
+      "iou_missing": 0.17219780385494232,
+      "delta": 0.03687143325805664
+    },
+    {
+      "class_id": 9,
+      "name": "bookshelf",
+      "iou_clean": 0.5752569437026978,
+      "iou_missing": 0.5392701029777527,
+      "delta": 0.03598684072494507
+    },
+    {
+      "class_id": 29,
+      "name": "whiteboard",
+      "iou_clean": 0.8662855625152588,
+      "iou_missing": 0.830933690071106,
+      "delta": 0.03535187244415283
+    },
+    {
+      "class_id": 39,
+      "name": "otherprop",
+      "iou_clean": 0.4305957555770874,
+      "iou_missing": 0.39527449011802673,
+      "delta": 0.03532126545906067
+    },
+    {
+      "class_id": 22,
+      "name": "books",
+      "iou_clean": 0.3491937518119812,
+      "iou_missing": 0.31524068117141724,
+      "delta": 0.033953070640563965
+    },
+    {
+      "class_id": 25,
+      "name": "paper",
+      "iou_clean": 0.36100995540618896,
+      "iou_missing": 0.3324473798274994,
+      "delta": 0.028562575578689575
+    },
+    {
+      "class_id": 23,
+      "name": "refridgerator",
+      "iou_clean": 0.6860033869743347,
+      "iou_missing": 0.6595695614814758,
+      "delta": 0.026433825492858887
+    },
+    {
+      "class_id": 36,
+      "name": "bag",
+      "iou_clean": 0.19088512659072876,
+      "iou_missing": 0.1662290245294571,
+      "delta": 0.024656102061271667
+    },
+    {
+      "class_id": 7,
+      "name": "door",
+      "iou_clean": 0.45974332094192505,
+      "iou_missing": 0.4379291832447052,
+      "delta": 0.02181413769721985
+    },
+    {
+      "class_id": 0,
+      "name": "wall",
+      "iou_clean": 0.8275253772735596,
+      "iou_missing": 0.8062934279441833,
+      "delta": 0.02123194932937622
+    },
+    {
+      "class_id": 37,
+      "name": "otherstructure",
+      "iou_clean": 0.30716297030448914,
+      "iou_missing": 0.28612837195396423,
+      "delta": 0.021034598350524902
+    },
+    {
+      "class_id": 12,
+      "name": "blinds",
+      "iou_clean": 0.7013618350028992,
+      "iou_missing": 0.6818022131919861,
+      "delta": 0.019559621810913086
+    },
+    {
+      "class_id": 10,
+      "name": "picture",
+      "iou_clean": 0.6656240820884705,
+      "iou_missing": 0.6461573839187622,
+      "delta": 0.019466698169708252
+    },
+    {
+      "class_id": 28,
+      "name": "box",
+      "iou_clean": 0.22733014822006226,
+      "iou_missing": 0.20899224281311035,
+      "delta": 0.018337905406951904
+    },
+    {
+      "class_id": 21,
+      "name": "ceiling",
+      "iou_clean": 0.7420156598091125,
+      "iou_missing": 0.7316535115242004,
+      "delta": 0.01036214828491211
+    },
+    {
+      "class_id": 27,
+      "name": "shower curtain",
+      "iou_clean": 0.4572809934616089,
+      "iou_missing": 0.4533035159111023,
+      "delta": 0.003977477550506592
+    },
+    {
+      "class_id": 6,
+      "name": "table",
+      "iou_clean": 0.45832496881484985,
+      "iou_missing": 0.47015485167503357,
+      "delta": -0.011829882860183716
+    },
+    {
+      "class_id": 19,
+      "name": "floor mat",
+      "iou_clean": 0.28012654185295105,
+      "iou_missing": 0.30794334411621094,
+      "delta": -0.027816802263259888
+    },
+    {
+      "class_id": 24,
+      "name": "television",
+      "iou_clean": 0.6606475114822388,
+      "iou_missing": 0.6953467130661011,
+      "delta": -0.034699201583862305
+    },
+    {
+      "class_id": 26,
+      "name": "towel",
+      "iou_clean": 0.39796292781829834,
+      "iou_missing": 0.4421485960483551,
+      "delta": -0.04418566823005676
+    }
+  ],
+  "top3_classes": [
+    {
+      "class_id": 35,
+      "name": "bathtub",
+      "iou_clean": 0.6642548441886902,
+      "iou_missing": 0.311393678188324,
+      "delta": 0.3528611660003662
+    },
+    {
+      "class_id": 31,
+      "name": "night stand",
+      "iou_clean": 0.4598873257637024,
+      "iou_missing": 0.24758704006671906,
+      "delta": 0.21230028569698334
+    },
+    {
+      "class_id": 33,
+      "name": "sink",
+      "iou_clean": 0.7075943350791931,
+      "iou_missing": 0.5108747482299805,
+      "delta": 0.19671958684921265
+    }
+  ],
+  "top3_share_of_positive_deltas": 0.28370829035891165,
+  "boundary": {
+    "clean_miou": 0.3586181402206421,
+    "missing_miou": 0.3184705376625061,
+    "delta": 0.040147602558135986
+  },
+  "interior": {
+    "clean_miou": 0.5404449701309204,
+    "missing_miou": 0.4747222363948822,
+    "delta": 0.06572273373603821
+  },
+  "far_depth": {
+    "clean_miou": 0.4517514705657959,
+    "missing_miou": 0.39149749279022217,
+    "delta": 0.06025397777557373
+  },
+  "near_depth": {
+    "clean_miou": 0.5293480753898621,
+    "missing_miou": 0.4678615629673004,
+    "delta": 0.061486512422561646
+  }
+}

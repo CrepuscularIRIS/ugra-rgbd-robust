@@ -1,0 +1,73 @@
+{
+  "n": 60,
+  "clean_miou": 0.5531356930732727,
+  "all_missing_miou": 0.5140753984451294,
+  "subsets": {
+    "none_all_clean": {
+      "miou": 0.5531356930732727,
+      "recovery_vs_all_missing": 1.0,
+      "damage_vs_clean": 0.0,
+      "n_blocks_missing_geo": 0
+    },
+    "all_missing": {
+      "miou": 0.5140753984451294,
+      "recovery_vs_all_missing": 0.0,
+      "damage_vs_clean": 0.03906029462814331,
+      "n_blocks_missing_geo": 29
+    },
+    "stage0": {
+      "miou": 0.5398579835891724,
+      "recovery_vs_all_missing": 0.6600714456840368,
+      "damage_vs_clean": 0.013277709484100342,
+      "n_blocks_missing_geo": 3
+    },
+    "stage1": {
+      "miou": 0.553627610206604,
+      "recovery_vs_all_missing": 1.012593789627405,
+      "damage_vs_clean": -0.0004919171333312988,
+      "n_blocks_missing_geo": 4
+    },
+    "stage2": {
+      "miou": 0.5283867716789246,
+      "recovery_vs_all_missing": 0.36639184035963945,
+      "damage_vs_clean": 0.024748921394348145,
+      "n_blocks_missing_geo": 18
+    },
+    "stage3": {
+      "miou": 0.5533024668693542,
+      "recovery_vs_all_missing": 1.0042696502335489,
+      "damage_vs_clean": -0.00016677379608154297,
+      "n_blocks_missing_geo": 4
+    },
+    "stage2_first_1": {
+      "miou": 0.5532640218734741,
+      "recovery_vs_all_missing": 1.0032854027708473,
+      "damage_vs_clean": -0.00012832880020141602,
+      "n_blocks_missing_geo": 1
+    },
+    "stage2_first_3": {
+      "miou": 0.5540928840637207,
+      "recovery_vs_all_missing": 1.0245054728736822,
+      "damage_vs_clean": -0.000957190990447998,
+      "n_blocks_missing_geo": 3
+    },
+    "stage2_first_6": {
+      "miou": 0.5454484224319458,
+      "recovery_vs_all_missing": 0.8031947604463753,
+      "damage_vs_clean": 0.007687270641326904,
+      "n_blocks_missing_geo": 6
+    },
+    "stage2_first_12": {
+      "miou": 0.5379616618156433,
+      "recovery_vs_all_missing": 0.6115228673493834,
+      "damage_vs_clean": 0.015174031257629395,
+      "n_blocks_missing_geo": 12
+    },
+    "stage2_first_18": {
+      "miou": 0.529486358165741,
+      "recovery_vs_all_missing": 0.3945428437579636,
+      "damage_vs_clean": 0.02364933490753174,
+      "n_blocks_missing_geo": 18
+    }
+  }
+}

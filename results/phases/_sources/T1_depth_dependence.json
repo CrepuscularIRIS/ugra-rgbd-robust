@@ -1,0 +1,65 @@
+{
+  "n": 200,
+  "models": {
+    "S": {
+      "load_info": {
+        "strict_ok": true,
+        "missing": [],
+        "unexpected": [],
+        "ckpt": "/home/lingxufeng/workspace/ugra-rgbd-robust/repos/DFormer/checkpoints/trained/DFormerv2_Small_NYU.pth"
+      },
+      "miou": {
+        "clean": 0.5307732820510864,
+        "entire_missing": 0.4660399556159973,
+        "zeros": 0.46591195464134216,
+        "constant_half": 0.46711230278015137,
+        "inverted": 0.5319072008132935,
+        "random": 0.4640091061592102,
+        "noise_sigma0_5": 0.5157375335693359
+      },
+      "clean_minus_missing": 0.06473332643508911,
+      "mean_stage_feat_l1_clean_vs_missing": 0.13978789580753073,
+      "num_batches_feat": 100
+    },
+    "B": {
+      "load_info": {
+        "strict_ok": true,
+        "missing": [],
+        "unexpected": [],
+        "ckpt": "/data/datasets/rgbd-semseg/checkpoints/NYUDepthv2/DFormerv2_Base_NYU.pth"
+      },
+      "miou": {
+        "clean": 0.5453182458877563,
+        "entire_missing": 0.5438744425773621,
+        "zeros": 0.5439037680625916,
+        "constant_half": 0.5436882972717285,
+        "inverted": 0.545076310634613,
+        "random": 0.5422994494438171,
+        "noise_sigma0_5": 0.5452527403831482
+      },
+      "clean_minus_missing": 0.0014438033103942871,
+      "mean_stage_feat_l1_clean_vs_missing": 0.012966845012269914,
+      "num_batches_feat": 100
+    },
+    "L": {
+      "load_info": {
+        "strict_ok": true,
+        "missing": [],
+        "unexpected": [],
+        "ckpt": "/home/lingxufeng/workspace/ugra-rgbd-robust/repos/DFormer/DFormerv2_Large_NYU.pth"
+      },
+      "miou": {
+        "clean": 0.5528039932250977,
+        "entire_missing": 0.5515963435173035,
+        "zeros": 0.550987184047699,
+        "constant_half": 0.5507168173789978,
+        "inverted": 0.5519904494285583,
+        "random": 0.5505440831184387,
+        "noise_sigma0_5": 0.5521160364151001
+      },
+      "clean_minus_missing": 0.0012076497077941895,
+      "mean_stage_feat_l1_clean_vs_missing": 0.01138997359725181,
+      "num_batches_feat": 100
+    }
+  }
+}

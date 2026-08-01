@@ -1,0 +1,97 @@
+{
+  "model_tag": "posctrl_attn_vo",
+  "checkpoint": "/home/lingxufeng/workspace/ugra-rgbd-robust/results/score_push/runs/l2_nof/pos_control_screen/transplant/transplant_attn_vo.pth",
+  "config": "local_configs.NYUDepthv2.DFormerv2_S",
+  "dataset": "NYUDepthv2",
+  "eval_split": "full",
+  "n_val_images": 654,
+  "num_classes": 40,
+  "eval_crop_size": [
+    480,
+    640
+  ],
+  "seed": 20260721,
+  "sliding": true,
+  "flip": true,
+  "amp": "fp16",
+  "val_batch_size": 16,
+  "ms_scales": [
+    0.5,
+    0.75,
+    1.0,
+    1.25,
+    1.5
+  ],
+  "protocol": {
+    "single": "evaluate_msf(scales=[1.0]): single-scale, flip, sliding, amp fp16",
+    "ms": "evaluate_msf(scales=[0.5, 0.75, 1.0, 1.25, 1.5]): flip, sliding, amp fp16"
+  },
+  "corruption_kwargs": {
+    "entire_missing": "zeros_like(normalized_depth)",
+    "holes": {
+      "num_holes": 3,
+      "hole_frac": 0.15,
+      "seed": 20260721
+    },
+    "gaussian": {
+      "sigma": 0.15,
+      "seed": 20260721
+    }
+  },
+  "results": {
+    "single": {
+      "entire_missing": {
+        "miou": 49.59,
+        "macc": 64.71,
+        "mf1": 64.01,
+        "ious": [
+          81.0999984741211,
+          84.63999938964844,
+          59.61000061035156,
+          66.33000183105469,
+          61.52000045776367,
+          59.06999969482422,
+          46.25,
+          42.08000183105469,
+          46.95000076293945,
+          46.790000915527344,
+          63.619998931884766,
+          63.70000076293945,
+          62.31999969482422,
+          15.520000457763672,
+          19.700000762939453,
+          67.04000091552734,
+          44.369998931884766,
+          42.29999923706055,
+          34.400001525878906,
+          41.0,
+          20.079999923706055,
+          71.0999984741211,
+          35.20000076293945,
+          68.06999969482422,
+          65.66999816894531,
+          36.86000061035156,
+          43.45000076293945,
+          43.369998931884766,
+          16.639999389648438,
+          82.0199966430664,
+          82.63999938964844,
+          39.150001525878906,
+          74.31999969482422,
+          56.029998779296875,
+          47.790000915527344,
+          36.619998931884766,
+          20.09000015258789,
+          35.77000045776367,
+          19.5,
+          40.900001525878906
+        ],
+        "seconds": 59.6,
+        "mpa_pixel_gated_frac": null
+      }
+    }
+  },
+  "summary": {},
+  "timestamp": "2026-07-25 21:29:56",
+  "torch_version": "2.8.0+cu128"
+}

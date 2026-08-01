@@ -1,0 +1,403 @@
+{
+  "master": "00_PHASE_MASTER.md",
+  "phases": {
+    "phase1_phenomenon": {
+      "phase": 1,
+      "name": "phenomenon",
+      "question": "What collapses, for which capacity, under which depth transforms?",
+      "status": "complete",
+      "experiments": {
+        "P1.1_base_gap": {
+          "source": "pipeline_results / sequential n=500",
+          "clean_miou": 0.5449,
+          "entire_missing_miou": 0.4829,
+          "delta_pt": 6.2,
+          "protocol": "single-scale NYU val"
+        },
+        "P1.2_capacity_discontinuity": {
+          "source": "T1_depth_dependence.json",
+          "n": 200,
+          "models": {
+            "S": {
+              "strict_ok": true,
+              "clean_miou": 0.5307732820510864,
+              "entire_missing_miou": 0.4660399556159973,
+              "delta": 0.06473332643508911,
+              "feat_l1_clean_vs_missing": 0.13978789580753073,
+              "miou_ablations": {
+                "clean": 0.5307732820510864,
+                "entire_missing": 0.4660399556159973,
+                "zeros": 0.46591195464134216,
+                "constant_half": 0.46711230278015137,
+                "inverted": 0.5319072008132935,
+                "random": 0.4640091061592102,
+                "noise_sigma0_5": 0.5157375335693359
+              }
+            },
+            "B": {
+              "strict_ok": true,
+              "clean_miou": 0.5453182458877563,
+              "entire_missing_miou": 0.5438744425773621,
+              "delta": 0.0014438033103942871,
+              "feat_l1_clean_vs_missing": 0.012966845012269914,
+              "miou_ablations": {
+                "clean": 0.5453182458877563,
+                "entire_missing": 0.5438744425773621,
+                "zeros": 0.5439037680625916,
+                "constant_half": 0.5436882972717285,
+                "inverted": 0.545076310634613,
+                "random": 0.5422994494438171,
+                "noise_sigma0_5": 0.5452527403831482
+              }
+            },
+            "L": {
+              "strict_ok": true,
+              "clean_miou": 0.5528039932250977,
+              "entire_missing_miou": 0.5515963435173035,
+              "delta": 0.0012076497077941895,
+              "feat_l1_clean_vs_missing": 0.01138997359725181,
+              "miou_ablations": {
+                "clean": 0.5528039932250977,
+                "entire_missing": 0.5515963435173035,
+                "zeros": 0.550987184047699,
+                "constant_half": 0.5507168173789978,
+                "inverted": 0.5519904494285583,
+                "random": 0.5505440831184387,
+                "noise_sigma0_5": 0.5521160364151001
+              }
+            }
+          },
+          "headline": "S \u0394\u22486.5pt; B/L \u0394\u22480.1pt under strict load"
+        },
+        "P1.3_relational_ablations_S": {
+          "source": "T1 S ablations",
+          "equivalence_class_collapse": [
+            "entire_missing",
+            "zeros",
+            "constant_half",
+            "random"
+          ],
+          "clean_equivalent": [
+            "inverted"
+          ],
+          "intermediate": [
+            "noise_sigma0_5"
+          ],
+          "interpretation_label": "candidate: model reads relational depth field (Final.md H6)"
+        }
+      },
+      "hypotheses_status": {
+        "H3_reliance_bifurcation": "confirmed_as_phenomenon",
+        "H4_B_L_immunity_mechanism": "open_confounded",
+        "H5_task_sufficiency": "open",
+        "H6_relational_reading": "supported_by_ablation_pattern"
+      }
+    },
+    "phase2_dynamics": {
+      "phase": 2,
+      "name": "dynamics",
+      "question": "Root vs lever: how does a small prior disturbance become a large state error?",
+      "status": "complete",
+      "experiments": {
+        "P2.1_decoder_vs_sequential_patch": {
+          "source": "sequential_and_global_jspace.json exp1",
+          "n": 500,
+          "decoder_only_recovery": {
+            "0": -0.005955145938784539,
+            "1": -0.0038367145771615804,
+            "2": 0.43907684429625565,
+            "3": 0.7785292898355165
+          },
+          "sequential_recompute_recovery": {
+            "0": 0.2761055833876552,
+            "1": 0.2785862136714241,
+            "2": 0.994859081081159,
+            "3": 0.7848240573100533
+          },
+          "headline": "sequential stage2 recovery \u22480.995; stage3 \u22480.78; stage0/1 \u22480.28"
+        },
+        "P2.2_geo_vs_content_interchange": {
+          "source": "T2_geo_routing_vs_content.json",
+          "n": 100,
+          "combinations": {
+            "geoC_contentC": {
+              "miou": 0.5534222722053528,
+              "recovery_vs_MM": 1.0
+            },
+            "geoM_contentM": {
+              "miou": 0.49362626671791077,
+              "recovery_vs_MM": 0.0
+            },
+            "geoC_contentM": {
+              "miou": 0.49556857347488403,
+              "recovery_vs_MM": 0.032482215846026334
+            },
+            "geoM_contentC": {
+              "miou": 0.5552763938903809,
+              "recovery_vs_MM": 1.0310074505799132
+            }
+          },
+          "headline": "clean geo + miss content \u22483% recovery; miss geo + clean content \u2248100%"
+        },
+        "P2.3_block_error_growth": {
+          "source": "T3_block_error_growth.json",
+          "n": 60,
+          "n_blocks": 29,
+          "stage_means": {
+            "0": {
+              "mean_cosine": 0.9962584972381592,
+              "mean_l2": 30.94066611925761,
+              "blocks": "0-2"
+            },
+            "1": {
+              "mean_cosine": 0.9932940602302551,
+              "mean_l2": 64.47920513153076,
+              "blocks": "3-6"
+            },
+            "2": {
+              "mean_cosine": 0.9675762255986532,
+              "mean_l2": 148.01937908596463,
+              "blocks": "7-24"
+            },
+            "3": {
+              "mean_cosine": 0.9579876810312271,
+              "mean_l2": 87.56955337524414,
+              "blocks": "25-28"
+            }
+          },
+          "headline": "gradual stage2 drift cos 0.99\u21920.94; stage3 does not dominate growth"
+        },
+        "P2.4_statistics_channel": {
+          "source": "T4_statistics_counterfactual.json",
+          "n": 100,
+          "counterfactuals": {
+            "match_mean_std_s3": {
+              "miou": 0.4992855191230774,
+              "recovery": 0.0806020644354082
+            },
+            "match_norm_s3": {
+              "miou": 0.49551573395729065,
+              "recovery": 0.017296215201751643
+            },
+            "match_mean_std_all": {
+              "miou": 0.5026402473449707,
+              "recovery": 0.13693787926180795
+            },
+            "dir_only_s3": {
+              "miou": 0.495983749628067,
+              "recovery": 0.025155583359399436
+            }
+          },
+          "headline": "mean/std all stages \u226414% recovery; norm-only \u22482%"
+        }
+      },
+      "hypotheses_status": {
+        "H1_disturbance_integration": "supported",
+        "kernel_as_primary_repair_lever": "demoted",
+        "statistics_as_primary": "killed",
+        "stage3_amplification_as_feature_drift": "coordinate_contested"
+      },
+      "key_structural_fact": "Root cause (false prior) and repair lever (state reset at stage2) have come apart"
+    },
+    "phase3_residual_geometry": {
+      "phase": 3,
+      "name": "residual_geometry",
+      "question": "Is the residual endpoint a shared law, or a trajectory-specific shadow?",
+      "status": "complete",
+      "experiments": {
+        "P3.1_per_image_vs_global_rank": {
+          "source": "sequential_and_global_jspace + c1_c7_spatial + T7",
+          "per_image_oracle_k8_recovery_n500": 0.7393808516119091,
+          "global_energy_k8_recovery_n500": 0.18238949195550067,
+          "global_energy_k32_recovery_n500": 0.5549363590184339,
+          "random_k8_recovery": 0.01804336783211396,
+          "full_stage3_patch_recovery": 0.790298451767912,
+          "T7_task_weighted_k8_recovery": 0.3020835197786451,
+          "T7_energy_k8_recovery": 0.21520614622015252,
+          "T7_oracle_k8_recovery": 0.8694454651411316,
+          "headline": "per-image k8 strong (~74-87%); global k8 weak (~18-22%); task PCA ~30%"
+        },
+        "P3.2_principal_angles": {
+          "source": "T6_subspace_angles.json",
+          "n_images": 100,
+          "k": 8,
+          "stage": 3,
+          "n_pairs": 200,
+          "mean_principal_angle_deg": 72.67681121826172,
+          "std_principal_angle_deg": 2.7550642490386963,
+          "median_principal_angle_deg": 72.96491241455078,
+          "p25_principal_angle_deg": 71.385498046875,
+          "p75_principal_angle_deg": 74.62928771972656,
+          "affinity_mean_offdiag": 0.12058694660663605,
+          "spectral_kmeans_k4_cluster_sizes": [
+            11,
+            41,
+            31,
+            17
+          ],
+          "headline": "mean principal angle ~73\u00b0; affinity 0.12 \u2014 near-orthogonal per-image subspaces"
+        },
+        "P3.3_corruption_overlap": {
+          "source": "T9_corruption_subspace_overlap.json",
+          "k": 16,
+          "pairwise": {
+            "entire_missing__entire_missing": {
+              "mean_principal_angle_deg": 0.0169288981705904,
+              "projector_overlap_fro_over_k": 0.9999998211860657
+            },
+            "entire_missing__holes": {
+              "mean_principal_angle_deg": 41.65900421142578,
+              "projector_overlap_fro_over_k": 0.5623748898506165
+            },
+            "entire_missing__gaussian": {
+              "mean_principal_angle_deg": 48.018123626708984,
+              "projector_overlap_fro_over_k": 0.47133883833885193
+            },
+            "holes__holes": {
+              "mean_principal_angle_deg": 0.01109627541154623,
+              "projector_overlap_fro_over_k": 1.0
+            },
+            "holes__gaussian": {
+              "mean_principal_angle_deg": 51.4234504699707,
+              "projector_overlap_fro_over_k": 0.4300031065940857
+            },
+            "gaussian__gaussian": {
+              "mean_principal_angle_deg": 0.04035811498761177,
+              "projector_overlap_fro_over_k": 0.9999995827674866
+            }
+          },
+          "headline": "partial overlap 0.43\u20130.56 across missing/holes/gaussian at k=16"
+        },
+        "P3.4_trust_direction_negative": {
+          "source": "c7_trust_steer.json",
+          "raw": {
+            "clean_miou": 0.5449824333190918,
+            "entire_missing_miou": 0.48329052329063416,
+            "C7": {
+              "0.0": {
+                "miou": 0.4828479290008545,
+                "recovery": -0.007174267899559284
+              },
+              "0.5": {
+                "miou": 0.48250147700309753,
+                "recovery": -0.01279010954876652
+              },
+              "1.0": {
+                "miou": 0.4830892086029053,
+                "recovery": -0.003263226695947947
+              },
+              "2.0": {
+                "miou": 0.48306018114089966,
+                "recovery": -0.0037337496865998045
+              },
+              "-0.5": {
+                "miou": 0.48250827193260193,
+                "recovery": -0.012679966589969165
+              },
+              "-1.0": {
+                "miou": 0.48270297050476074,
+                "recovery": -0.009523984353902852
+              }
+            }
+          },
+          "headline": "GAP mean-difference steering does not recover mIoU"
+        }
+      },
+      "hypotheses_status": {
+        "H2_shared_law_in_generator": "supported_as_reading",
+        "small_shared_dictionary_k8": "killed",
+        "PCA_wrong_objective_as_primary": "demoted_secondary",
+        "unified_corruption_residual_space": "partial_only"
+      }
+    },
+    "phase4_open_gates": {
+      "phase": 4,
+      "name": "open_gates",
+      "question": "What decides the paper spine and which method families remain open?",
+      "status": "planned_not_run",
+      "gates_from_Final_md": {
+        "Q1_capacity_discontinuity_mechanism": {
+          "status": "not_run",
+          "needs": [
+            "coupling_weight_inspection_SBL",
+            "prior_amplification_on_BL",
+            "prior_disabled_condition",
+            "cross_family_eval",
+            "SUNRGBD_replication",
+            "continuous_metric_check"
+          ],
+          "train_required": false,
+          "priority": 1
+        },
+        "Q2_endpoint_predictability_T8": {
+          "status": "not_run",
+          "needs": [
+            "RGB_to_subspace_probe",
+            "RGB_to_cluster_probe",
+            "optional_coeff_predictor"
+          ],
+          "train_required": "light",
+          "priority": 2,
+          "gates": "if no \u2192 residual-repair family closed"
+        },
+        "Q3_anatomy_of_6p5pts": {
+          "status": "not_run",
+          "needs": [
+            "per_class_delta",
+            "boundary_band",
+            "uniqueness_strata",
+            "tail_class_audit"
+          ],
+          "train_required": false,
+          "priority": 3
+        },
+        "Q4_factorized_damage_law": {
+          "status": "not_run",
+          "needs": [
+            "block_subset_confinement",
+            "stage0_anomaly",
+            "resolution_sensitivity"
+          ],
+          "train_required": false,
+          "priority": 4
+        },
+        "Q5_minimal_depth_statistic": {
+          "status": "not_run",
+          "needs": [
+            "transform_sweep",
+            "sign_test",
+            "quantization_sweep"
+          ],
+          "train_required": false,
+          "priority": 5
+        },
+        "Q6_stage3_task_amplification_T5": {
+          "status": "not_run",
+          "needs": [
+            "clean_reader",
+            "missing_reader",
+            "shared_reader",
+            "cross_test_matrix"
+          ],
+          "train_required": "light",
+          "priority": 6
+        },
+        "T10_training_trajectory": {
+          "status": "not_run",
+          "needs": [
+            "intermediate_checkpoints_or_retrain"
+          ],
+          "train_required": true,
+          "priority": 7
+        }
+      },
+      "deferred_methods_not_diagnostic": [
+        "full_SAE",
+        "fiber_bundle_models",
+        "closed_loop_correction_nets",
+        "reliance_shaping_training",
+        "strict_info_theoretic_accounting"
+      ]
+    }
+  }
+}

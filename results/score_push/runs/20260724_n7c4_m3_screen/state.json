@@ -1,0 +1,17 @@
+{
+  "node": "n7",
+  "cycle": 4,
+  "method": "M3_boundary_gate",
+  "kind": "finetune_proxy_SCREEN",
+  "reservation": "rsv_00c161fd",
+  "status": "DONE",
+  "note": "training complete rc=0",
+  "pid": 3891109,
+  "port": 29523,
+  "log": "/home/lingxufeng/workspace/ugra-rgbd-robust/results/score_push/runs/20260724_n7c4_m3_screen/train.log",
+  "epoch0_identity_miou": null,
+  "last_val_miou": 55.8100,
+  "last_epoch": 49,
+  "kill_switch_miou": 56.0,
+  "updated": "2026-07-24T06:55:01Z"
+}

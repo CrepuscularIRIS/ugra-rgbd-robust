@@ -1,0 +1,46 @@
+{
+  "title": "Integrated Diagnostic Phases \u2014 DFormerv2 Missing Depth",
+  "based_on": [
+    "Final.md",
+    "Deep.md",
+    "pipeline diagnostics",
+    "deep_notrain suite"
+  ],
+  "model_family": "DFormerv2 S/B/L",
+  "dataset": "NYUDepthv2",
+  "phases": [
+    {
+      "id": 1,
+      "dir": "phase1_phenomenon",
+      "status": "complete",
+      "cluster": "reliance + input semantics"
+    },
+    {
+      "id": 2,
+      "dir": "phase2_dynamics",
+      "status": "complete",
+      "cluster": "dynamics H1"
+    },
+    {
+      "id": 3,
+      "dir": "phase3_residual_geometry",
+      "status": "complete",
+      "cluster": "endpoint geometry H2"
+    },
+    {
+      "id": 4,
+      "dir": "phase4_open_gates",
+      "status": "planned",
+      "cluster": "decision gates Q1\u2013Q6"
+    }
+  ],
+  "map_compressed": {
+    "from": "where is lost information and how do we put it back",
+    "to": [
+      "why only S needs depth (Q1)",
+      "by what law false kernel becomes large state error (Q4)",
+      "is endpoint predictable (Q2 gate)",
+      "does the 6.5pt survive anatomy (Q3)"
+    ]
+  }
+}

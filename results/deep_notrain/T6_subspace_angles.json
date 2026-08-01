@@ -1,0 +1,18 @@
+{
+  "n_images": 100,
+  "k": 8,
+  "stage": 3,
+  "n_pairs": 200,
+  "mean_principal_angle_deg": 72.67681121826172,
+  "std_principal_angle_deg": 2.7550642490386963,
+  "median_principal_angle_deg": 72.96491241455078,
+  "p25_principal_angle_deg": 71.385498046875,
+  "p75_principal_angle_deg": 74.62928771972656,
+  "spectral_kmeans_k4_cluster_sizes": [
+    11,
+    41,
+    31,
+    17
+  ],
+  "affinity_mean_offdiag": 0.12058694660663605
+}

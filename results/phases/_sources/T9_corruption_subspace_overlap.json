@@ -1,0 +1,31 @@
+{
+  "k": 16,
+  "stage": 3,
+  "n": 60,
+  "pairwise": {
+    "entire_missing__entire_missing": {
+      "mean_principal_angle_deg": 0.0169288981705904,
+      "projector_overlap_fro_over_k": 0.9999998211860657
+    },
+    "entire_missing__holes": {
+      "mean_principal_angle_deg": 41.65900421142578,
+      "projector_overlap_fro_over_k": 0.5623748898506165
+    },
+    "entire_missing__gaussian": {
+      "mean_principal_angle_deg": 48.018123626708984,
+      "projector_overlap_fro_over_k": 0.47133883833885193
+    },
+    "holes__holes": {
+      "mean_principal_angle_deg": 0.01109627541154623,
+      "projector_overlap_fro_over_k": 1.0
+    },
+    "holes__gaussian": {
+      "mean_principal_angle_deg": 51.4234504699707,
+      "projector_overlap_fro_over_k": 0.4300031065940857
+    },
+    "gaussian__gaussian": {
+      "mean_principal_angle_deg": 0.04035811498761177,
+      "projector_overlap_fro_over_k": 0.9999995827674866
+    }
+  }
+}

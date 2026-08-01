@@ -1,0 +1,91 @@
+# ---------------------------------------------------------------------------
+# Third-party checkouts. DFormer is fetched and patched by scripts/setup_dformer.sh;
+# GeminiFusion is optional. Neither is redistributed here.
+# ---------------------------------------------------------------------------
+repos/
+third_party/
+
+# ---------------------------------------------------------------------------
+# Model weights and tensors. ~7 GB of checkpoints are deliberately not shipped;
+# see README "What is not here".
+# ---------------------------------------------------------------------------
+*.pth
+*.pth.tar
+*.pt
+*.ckpt
+*.safetensors
+*.onnx
+*.npy
+*.npz
+checkpoints/
+!checkpoints/README.md
+
+# ---------------------------------------------------------------------------
+# Datasets. Never copied into the repository -- they stay by path.
+# ---------------------------------------------------------------------------
+datasets/
+data/
+*.mat
+
+# ---------------------------------------------------------------------------
+# Run output. results/ IS tracked (the frozen artifacts), but live run dumps
+# and anything written by a training loop are not.
+# ---------------------------------------------------------------------------
+logs/
+outputs/
+runs_live/
+wandb/
+.spine/
+*.log
+heartbeat*
+nohup.out
+
+# ---------------------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.coverage
+htmlcov/
+
+# ---------------------------------------------------------------------------
+# Secrets and local environment. Nothing matching these has ever been committed;
+# the patterns are here to keep it that way.
+# ---------------------------------------------------------------------------
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+settings.json
+secrets.*
+
+# ---------------------------------------------------------------------------
+# Editors / OS
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
+
+# ---------------------------------------------------------------------------
+# Local scratch
+# ---------------------------------------------------------------------------
+temp/
+tmp/
+cache/
+scratch/

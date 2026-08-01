@@ -1,0 +1,902 @@
+{
+  "Q1a": {
+    "models": {
+      "S": {
+        "load_strict_ok": true,
+        "overall_mean_abs_weight_pos": 0.6108807317093657,
+        "overall_mean_abs_weight_depth": 1.448632478135927,
+        "overall_mean_abs_decay": 0.09272692018541796,
+        "ratio_depth_over_pos": 2.3713834844362585,
+        "stages": [
+          {
+            "stage": 0,
+            "mean_abs_weight_pos": 1.2560623089472454,
+            "mean_abs_weight_depth": 3.858563780784607,
+            "mean_abs_decay": 0.1293751746416092,
+            "n_blocks": 3,
+            "weight_depth_list": [
+              0.4274017810821533,
+              10.0534086227417,
+              1.0948809385299683
+            ]
+          },
+          {
+            "stage": 1,
+            "mean_abs_weight_pos": 1.3809856325387955,
+            "mean_abs_weight_depth": 0.8059370554983616,
+            "mean_abs_decay": 0.1293751746416092,
+            "n_blocks": 4,
+            "weight_depth_list": [
+              1.239516019821167,
+              0.5539867877960205,
+              1.2537283897399902,
+              0.17651702463626862
+            ]
+          },
+          {
+            "stage": 2,
+            "mean_abs_weight_pos": 0.39374508989405715,
+            "mean_abs_weight_depth": 1.5032220298631325,
+            "mean_abs_decay": 0.08291874080896378,
+            "n_blocks": 18,
+            "weight_depth_list": [
+              0.10473363846540451,
+              0.7869612574577332,
+              0.5285423994064331,
+              4.102144718170166,
+              2.586002826690674,
+              0.009628679603338242,
+              0.1118658110499382,
+              1.8672282695770264,
+              0.20026631653308868,
+              0.19469283521175385,
+              3.082051992416382,
+              3.5859646797180176,
+              3.1926372051239014,
+              2.125692129135132,
+              2.8724899291992188,
+              1.176236629486084,
+              0.37369808554649353,
+              0.15715913474559784
+            ]
+          },
+          {
+            "stage": 3,
+            "mean_abs_weight_pos": 0.33400003612041473,
+            "mean_abs_weight_depth": 0.03822644101455808,
+            "mean_abs_decay": 0.07272928208112717,
+            "n_blocks": 4,
+            "weight_depth_list": [
+              0.01416819728910923,
+              0.059423718601465225,
+              0.061548858880996704,
+              0.017764989286661148
+            ]
+          }
+        ]
+      },
+      "B": {
+        "load_strict_ok": true,
+        "overall_mean_abs_weight_pos": 1.0,
+        "overall_mean_abs_weight_depth": 1.0,
+        "overall_mean_abs_decay": 0.08511380586359236,
+        "ratio_depth_over_pos": 1.0,
+        "stages": [
+          {
+            "stage": 0,
+            "mean_abs_weight_pos": 1.0,
+            "mean_abs_weight_depth": 1.0,
+            "mean_abs_decay": 0.10664981603622437,
+            "n_blocks": 4,
+            "weight_depth_list": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "stage": 1,
+            "mean_abs_weight_pos": 1.0,
+            "mean_abs_weight_depth": 1.0,
+            "mean_abs_decay": 0.10664981603622437,
+            "n_blocks": 8,
+            "weight_depth_list": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "stage": 2,
+            "mean_abs_weight_pos": 1.0,
+            "mean_abs_weight_depth": 1.0,
+            "mean_abs_decay": 0.07873956859111786,
+            "n_blocks": 25,
+            "weight_depth_list": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "stage": 3,
+            "mean_abs_weight_pos": 1.0,
+            "mean_abs_weight_depth": 1.0,
+            "mean_abs_decay": 0.07272928208112717,
+            "n_blocks": 8,
+            "weight_depth_list": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        ]
+      },
+      "L": {
+        "load_strict_ok": true,
+        "overall_mean_abs_weight_pos": 1.0,
+        "overall_mean_abs_weight_depth": 1.0,
+        "overall_mean_abs_decay": 0.07670002761814329,
+        "ratio_depth_over_pos": 1.0,
+        "stages": [
+          {
+            "stage": 0,
+            "mean_abs_weight_pos": 1.0,
+            "mean_abs_weight_depth": 1.0,
+            "mean_abs_decay": 0.08598653972148895,
+            "n_blocks": 4,
+            "weight_depth_list": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "stage": 1,
+            "mean_abs_weight_pos": 1.0,
+            "mean_abs_weight_depth": 1.0,
+            "mean_abs_decay": 0.08598653972148895,
+            "n_blocks": 8,
+            "weight_depth_list": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "stage": 2,
+            "mean_abs_weight_pos": 1.0,
+            "mean_abs_weight_depth": 1.0,
+            "mean_abs_decay": 0.07413183897733688,
+            "n_blocks": 25,
+            "weight_depth_list": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          {
+            "stage": 3,
+            "mean_abs_weight_pos": 1.0,
+            "mean_abs_weight_depth": 1.0,
+            "mean_abs_decay": 0.07079584896564484,
+            "n_blocks": 8,
+            "weight_depth_list": [
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "Q1b": {
+    "clean": {
+      "miou": 0.5622864961624146,
+      "pixel_acc": 0.7776174635026836,
+      "mean_ce": 1.208177973658319,
+      "n": 150
+    },
+    "entire_missing": {
+      "miou": 0.5105122923851013,
+      "pixel_acc": 0.7453685369547188,
+      "mean_ce": 1.4488961872366182,
+      "n": 150
+    },
+    "zeros_depth": {
+      "miou": 0.5074287056922913,
+      "pixel_acc": 0.7448220661973041,
+      "mean_ce": 1.4537779515853617,
+      "n": 150
+    },
+    "prior_depth_weight_0_clean_depth": {
+      "miou": 0.5097841620445251,
+      "pixel_acc": 0.7454974815686527,
+      "mean_ce": 1.4481937633242987,
+      "n": 150
+    },
+    "prior_depth_weight_0_zeros_depth": {
+      "miou": 0.5087491869926453,
+      "pixel_acc": 0.744894614036785,
+      "mean_ce": 1.4490223160941298,
+      "n": 150
+    }
+  },
+  "Q1c": {
+    "B": {
+      "0.0": {
+        "clean_miou": 0.5566410422325134,
+        "missing_miou": 0.5567270517349243,
+        "delta": -8.600950241088867e-05,
+        "clean_pixacc": 0.7930131969895264,
+        "missing_pixacc": 0.7935076704422194
+      },
+      "1.0": {
+        "clean_miou": 0.5598098039627075,
+        "missing_miou": 0.5577670931816101,
+        "delta": 0.002042710781097412,
+        "clean_pixacc": 0.7945867266283956,
+        "missing_pixacc": 0.7935996427005232
+      },
+      "2.0": {
+        "clean_miou": 0.5606970191001892,
+        "missing_miou": 0.557054340839386,
+        "delta": 0.0036426782608032227,
+        "clean_pixacc": 0.7947928307722704,
+        "missing_pixacc": 0.7937259819913808
+      },
+      "4.0": {
+        "clean_miou": 0.5617616772651672,
+        "missing_miou": 0.5569098591804504,
+        "delta": 0.004851818084716797,
+        "clean_pixacc": 0.7949634893176625,
+        "missing_pixacc": 0.7935093863425609
+      }
+    },
+    "L": {
+      "0.0": {
+        "clean_miou": 0.560103714466095,
+        "missing_miou": 0.5610924959182739,
+        "delta": -0.000988781452178955,
+        "clean_pixacc": 0.7896254704324632,
+        "missing_pixacc": 0.789742690938649
+      },
+      "1.0": {
+        "clean_miou": 0.5626165866851807,
+        "missing_miou": 0.5597848892211914,
+        "delta": 0.002831697463989258,
+        "clean_pixacc": 0.7900115480092982,
+        "missing_pixacc": 0.7894106397097089
+      },
+      "2.0": {
+        "clean_miou": 0.5772119164466858,
+        "missing_miou": 0.5608116984367371,
+        "delta": 0.01640021800994873,
+        "clean_pixacc": 0.7903634056307515,
+        "missing_pixacc": 0.7899614437193268
+      },
+      "4.0": {
+        "clean_miou": 0.5774840116500854,
+        "missing_miou": 0.5622893571853638,
+        "delta": 0.01519465446472168,
+        "clean_pixacc": 0.7903780152965162,
+        "missing_pixacc": 0.7905822074371534
+      }
+    }
+  },
+  "Q1f": {
+    "S": {
+      "clean": {
+        "miou": 0.5604856014251709,
+        "pixel_acc": 0.7769499653200742,
+        "mean_ce": 1.211696225845449,
+        "n": 150
+      },
+      "missing": {
+        "miou": 0.5082985162734985,
+        "pixel_acc": 0.7450444600289906,
+        "mean_ce": 1.4494587146300912,
+        "n": 150
+      },
+      "delta_miou": 0.05218708515167236,
+      "delta_pixacc": 0.0319055052910836,
+      "delta_ce": 0.23776248878464235
+    },
+    "B": {
+      "clean": {
+        "miou": 0.5722373127937317,
+        "pixel_acc": 0.7845793906393177,
+        "mean_ce": 1.2844072633275845,
+        "n": 150
+      },
+      "missing": {
+        "miou": 0.5725142359733582,
+        "pixel_acc": 0.7842445727275332,
+        "mean_ce": 1.291045152608992,
+        "n": 150
+      },
+      "delta_miou": -0.00027692317962646484,
+      "delta_pixacc": 0.0003348179117844685,
+      "delta_ce": 0.006637889281407627
+    },
+    "L": {
+      "clean": {
+        "miou": 0.5678359270095825,
+        "pixel_acc": 0.7840716877160964,
+        "mean_ce": 1.3777497120172078,
+        "n": 150
+      },
+      "missing": {
+        "miou": 0.5655471682548523,
+        "pixel_acc": 0.7838720426067207,
+        "mean_ce": 1.3853480429900313,
+        "n": 150
+      },
+      "delta_miou": 0.0022887587547302246,
+      "delta_pixacc": 0.00019964510937564572,
+      "delta_ce": 0.007598330972823586
+    }
+  },
+  "Q3": {
+    "n": 200,
+    "macro_clean": 0.531455934047699,
+    "macro_missing": 0.46728330850601196,
+    "macro_delta": 0.06417262554168701,
+    "per_class_sorted_by_delta": [
+      {
+        "class_id": 35,
+        "name": "bathtub",
+        "iou_clean": 0.6642548441886902,
+        "iou_missing": 0.311393678188324,
+        "delta": 0.3528611660003662
+      },
+      {
+        "class_id": 31,
+        "name": "night stand",
+        "iou_clean": 0.4598873257637024,
+        "iou_missing": 0.24758704006671906,
+        "delta": 0.21230028569698334
+      },
+      {
+        "class_id": 33,
+        "name": "sink",
+        "iou_clean": 0.7075943350791931,
+        "iou_missing": 0.5108747482299805,
+        "delta": 0.19671958684921265
+      },
+      {
+        "class_id": 16,
+        "name": "dresser",
+        "iou_clean": 0.6870728135108948,
+        "iou_missing": 0.502772331237793,
+        "delta": 0.1843004822731018
+      },
+      {
+        "class_id": 18,
+        "name": "mirror",
+        "iou_clean": 0.5893397331237793,
+        "iou_missing": 0.4214048981666565,
+        "delta": 0.1679348349571228
+      },
+      {
+        "class_id": 13,
+        "name": "desk",
+        "iou_clean": 0.3464520275592804,
+        "iou_missing": 0.181749165058136,
+        "delta": 0.1647028625011444
+      },
+      {
+        "class_id": 11,
+        "name": "counter",
+        "iou_clean": 0.7316398024559021,
+        "iou_missing": 0.6172453761100769,
+        "delta": 0.1143944263458252
+      },
+      {
+        "class_id": 3,
+        "name": "bed",
+        "iou_clean": 0.574245035648346,
+        "iou_missing": 0.4655696451663971,
+        "delta": 0.10867539048194885
+      },
+      {
+        "class_id": 2,
+        "name": "cabinet",
+        "iou_clean": 0.5381165742874146,
+        "iou_missing": 0.43139714002609253,
+        "delta": 0.10671943426132202
+      },
+      {
+        "class_id": 17,
+        "name": "pillow",
+        "iou_clean": 0.4802398085594177,
+        "iou_missing": 0.37420618534088135,
+        "delta": 0.10603362321853638
+      },
+      {
+        "class_id": 20,
+        "name": "clothes",
+        "iou_clean": 0.28889164328575134,
+        "iou_missing": 0.21795080602169037,
+        "delta": 0.07094083726406097
+      },
+      {
+        "class_id": 30,
+        "name": "person",
+        "iou_clean": 0.7548611164093018,
+        "iou_missing": 0.6850063800811768,
+        "delta": 0.069854736328125
+      },
+      {
+        "class_id": 1,
+        "name": "floor",
+        "iou_clean": 0.8183569312095642,
+        "iou_missing": 0.7525638937950134,
+        "delta": 0.06579303741455078
+      },
+      {
+        "class_id": 34,
+        "name": "lamp",
+        "iou_clean": 0.48127904534339905,
+        "iou_missing": 0.4184609651565552,
+        "delta": 0.06281808018684387
+      },
+      {
+        "class_id": 32,
+        "name": "toilet",
+        "iou_clean": 0.6831992268562317,
+        "iou_missing": 0.6231961846351624,
+        "delta": 0.060003042221069336
+      },
+      {
+        "class_id": 14,
+        "name": "shelves",
+        "iou_clean": 0.2355465292930603,
+        "iou_missing": 0.17581233382225037,
+        "delta": 0.059734195470809937
+      },
+      {
+        "class_id": 15,
+        "name": "curtain",
+        "iou_clean": 0.6684008240699768,
+        "iou_missing": 0.6118512153625488,
+        "delta": 0.05654960870742798
+      },
+      {
+        "class_id": 5,
+        "name": "sofa",
+        "iou_clean": 0.598695695400238,
+        "iou_missing": 0.5533355474472046,
+        "delta": 0.04536014795303345
+      },
+      {
+        "class_id": 4,
+        "name": "chair",
+        "iou_clean": 0.6317472457885742,
+        "iou_missing": 0.5877335667610168,
+        "delta": 0.04401367902755737
+      },
+      {
+        "class_id": 8,
+        "name": "window",
+        "iou_clean": 0.46501120924949646,
+        "iou_missing": 0.4222041368484497,
+        "delta": 0.04280707240104675
+      },
+      {
+        "class_id": 38,
+        "name": "otherfurniture",
+        "iou_clean": 0.20906923711299896,
+        "iou_missing": 0.17219780385494232,
+        "delta": 0.03687143325805664
+      },
+      {
+        "class_id": 9,
+        "name": "bookshelf",
+        "iou_clean": 0.5752569437026978,
+        "iou_missing": 0.5392701029777527,
+        "delta": 0.03598684072494507
+      },
+      {
+        "class_id": 29,
+        "name": "whiteboard",
+        "iou_clean": 0.8662855625152588,
+        "iou_missing": 0.830933690071106,
+        "delta": 0.03535187244415283
+      },
+      {
+        "class_id": 39,
+        "name": "otherprop",
+        "iou_clean": 0.4305957555770874,
+        "iou_missing": 0.39527449011802673,
+        "delta": 0.03532126545906067
+      },
+      {
+        "class_id": 22,
+        "name": "books",
+        "iou_clean": 0.3491937518119812,
+        "iou_missing": 0.31524068117141724,
+        "delta": 0.033953070640563965
+      },
+      {
+        "class_id": 25,
+        "name": "paper",
+        "iou_clean": 0.36100995540618896,
+        "iou_missing": 0.3324473798274994,
+        "delta": 0.028562575578689575
+      },
+      {
+        "class_id": 23,
+        "name": "refridgerator",
+        "iou_clean": 0.6860033869743347,
+        "iou_missing": 0.6595695614814758,
+        "delta": 0.026433825492858887
+      },
+      {
+        "class_id": 36,
+        "name": "bag",
+        "iou_clean": 0.19088512659072876,
+        "iou_missing": 0.1662290245294571,
+        "delta": 0.024656102061271667
+      },
+      {
+        "class_id": 7,
+        "name": "door",
+        "iou_clean": 0.45974332094192505,
+        "iou_missing": 0.4379291832447052,
+        "delta": 0.02181413769721985
+      },
+      {
+        "class_id": 0,
+        "name": "wall",
+        "iou_clean": 0.8275253772735596,
+        "iou_missing": 0.8062934279441833,
+        "delta": 0.02123194932937622
+      },
+      {
+        "class_id": 37,
+        "name": "otherstructure",
+        "iou_clean": 0.30716297030448914,
+        "iou_missing": 0.28612837195396423,
+        "delta": 0.021034598350524902
+      },
+      {
+        "class_id": 12,
+        "name": "blinds",
+        "iou_clean": 0.7013618350028992,
+        "iou_missing": 0.6818022131919861,
+        "delta": 0.019559621810913086
+      },
+      {
+        "class_id": 10,
+        "name": "picture",
+        "iou_clean": 0.6656240820884705,
+        "iou_missing": 0.6461573839187622,
+        "delta": 0.019466698169708252
+      },
+      {
+        "class_id": 28,
+        "name": "box",
+        "iou_clean": 0.22733014822006226,
+        "iou_missing": 0.20899224281311035,
+        "delta": 0.018337905406951904
+      },
+      {
+        "class_id": 21,
+        "name": "ceiling",
+        "iou_clean": 0.7420156598091125,
+        "iou_missing": 0.7316535115242004,
+        "delta": 0.01036214828491211
+      },
+      {
+        "class_id": 27,
+        "name": "shower curtain",
+        "iou_clean": 0.4572809934616089,
+        "iou_missing": 0.4533035159111023,
+        "delta": 0.003977477550506592
+      },
+      {
+        "class_id": 6,
+        "name": "table",
+        "iou_clean": 0.45832496881484985,
+        "iou_missing": 0.47015485167503357,
+        "delta": -0.011829882860183716
+      },
+      {
+        "class_id": 19,
+        "name": "floor mat",
+        "iou_clean": 0.28012654185295105,
+        "iou_missing": 0.30794334411621094,
+        "delta": -0.027816802263259888
+      },
+      {
+        "class_id": 24,
+        "name": "television",
+        "iou_clean": 0.6606475114822388,
+        "iou_missing": 0.6953467130661011,
+        "delta": -0.034699201583862305
+      },
+      {
+        "class_id": 26,
+        "name": "towel",
+        "iou_clean": 0.39796292781829834,
+        "iou_missing": 0.4421485960483551,
+        "delta": -0.04418566823005676
+      }
+    ],
+    "top3_classes": [
+      {
+        "class_id": 35,
+        "name": "bathtub",
+        "iou_clean": 0.6642548441886902,
+        "iou_missing": 0.311393678188324,
+        "delta": 0.3528611660003662
+      },
+      {
+        "class_id": 31,
+        "name": "night stand",
+        "iou_clean": 0.4598873257637024,
+        "iou_missing": 0.24758704006671906,
+        "delta": 0.21230028569698334
+      },
+      {
+        "class_id": 33,
+        "name": "sink",
+        "iou_clean": 0.7075943350791931,
+        "iou_missing": 0.5108747482299805,
+        "delta": 0.19671958684921265
+      }
+    ],
+    "top3_share_of_positive_deltas": 0.28370829035891165,
+    "boundary": {
+      "clean_miou": 0.3586181402206421,
+      "missing_miou": 0.3184705376625061,
+      "delta": 0.040147602558135986
+    },
+    "interior": {
+      "clean_miou": 0.5404449701309204,
+      "missing_miou": 0.4747222363948822,
+      "delta": 0.06572273373603821
+    },
+    "far_depth": {
+      "clean_miou": 0.4517514705657959,
+      "missing_miou": 0.39149749279022217,
+      "delta": 0.06025397777557373
+    },
+    "near_depth": {
+      "clean_miou": 0.5293480753898621,
+      "missing_miou": 0.4678615629673004,
+      "delta": 0.061486512422561646
+    }
+  },
+  "Q5": {
+    "clean": {
+      "miou": 0.5741321444511414,
+      "pixel_acc": 0.7927430460243016,
+      "mean_ce": 1.1080349055781622,
+      "n": 120
+    },
+    "inverted": {
+      "miou": 0.5718808174133301,
+      "pixel_acc": 0.7914512635001996,
+      "mean_ce": 1.1099457804899533,
+      "n": 120
+    },
+    "rank_order": {
+      "miou": 0.5540018081665039,
+      "pixel_acc": 0.7792373466381569,
+      "mean_ce": 1.1978381033933159,
+      "n": 120
+    },
+    "quantize_8": {
+      "miou": 0.5680302977561951,
+      "pixel_acc": 0.7914726751619175,
+      "mean_ce": 1.122387031146624,
+      "n": 120
+    },
+    "quantize_4": {
+      "miou": 0.5482363700866699,
+      "pixel_acc": 0.7861937539963267,
+      "mean_ce": 1.1526307274155112,
+      "n": 120
+    },
+    "abs_centered": {
+      "miou": 0.5497995615005493,
+      "pixel_acc": 0.7781952253952753,
+      "mean_ce": 1.223143545587582,
+      "n": 120
+    },
+    "edge_sobel": {
+      "miou": 0.5272899866104126,
+      "pixel_acc": 0.7629841328489162,
+      "mean_ce": 1.3488409017961154,
+      "n": 120
+    },
+    "piecewise_4": {
+      "miou": 0.5044230818748474,
+      "pixel_acc": 0.759495304938293,
+      "mean_ce": 1.3184877953732206,
+      "n": 120
+    },
+    "entire_missing": {
+      "miou": 0.5148412585258484,
+      "pixel_acc": 0.7587104500333088,
+      "mean_ce": 1.3718750390146752,
+      "n": 120
+    },
+    "zeros": {
+      "miou": 0.5134057402610779,
+      "pixel_acc": 0.7592091850806414,
+      "mean_ce": 1.3692603377057242,
+      "n": 120
+    }
+  },
+  "Q4": {
+    "n": 60,
+    "clean_miou": 0.5531356930732727,
+    "all_missing_miou": 0.5140753984451294,
+    "subsets": {
+      "none_all_clean": {
+        "miou": 0.5531356930732727,
+        "recovery_vs_all_missing": 1.0,
+        "damage_vs_clean": 0.0,
+        "n_blocks_missing_geo": 0
+      },
+      "all_missing": {
+        "miou": 0.5140753984451294,
+        "recovery_vs_all_missing": 0.0,
+        "damage_vs_clean": 0.03906029462814331,
+        "n_blocks_missing_geo": 29
+      },
+      "stage0": {
+        "miou": 0.5398579835891724,
+        "recovery_vs_all_missing": 0.6600714456840368,
+        "damage_vs_clean": 0.013277709484100342,
+        "n_blocks_missing_geo": 3
+      },
+      "stage1": {
+        "miou": 0.553627610206604,
+        "recovery_vs_all_missing": 1.012593789627405,
+        "damage_vs_clean": -0.0004919171333312988,
+        "n_blocks_missing_geo": 4
+      },
+      "stage2": {
+        "miou": 0.5283867716789246,
+        "recovery_vs_all_missing": 0.36639184035963945,
+        "damage_vs_clean": 0.024748921394348145,
+        "n_blocks_missing_geo": 18
+      },
+      "stage3": {
+        "miou": 0.5533024668693542,
+        "recovery_vs_all_missing": 1.0042696502335489,
+        "damage_vs_clean": -0.00016677379608154297,
+        "n_blocks_missing_geo": 4
+      },
+      "stage2_first_1": {
+        "miou": 0.5532640218734741,
+        "recovery_vs_all_missing": 1.0032854027708473,
+        "damage_vs_clean": -0.00012832880020141602,
+        "n_blocks_missing_geo": 1
+      },
+      "stage2_first_3": {
+        "miou": 0.5540928840637207,
+        "recovery_vs_all_missing": 1.0245054728736822,
+        "damage_vs_clean": -0.000957190990447998,
+        "n_blocks_missing_geo": 3
+      },
+      "stage2_first_6": {
+        "miou": 0.5454484224319458,
+        "recovery_vs_all_missing": 0.8031947604463753,
+        "damage_vs_clean": 0.007687270641326904,
+        "n_blocks_missing_geo": 6
+      },
+      "stage2_first_12": {
+        "miou": 0.5379616618156433,
+        "recovery_vs_all_missing": 0.6115228673493834,
+        "damage_vs_clean": 0.015174031257629395,
+        "n_blocks_missing_geo": 12
+      },
+      "stage2_first_18": {
+        "miou": 0.529486358165741,
+        "recovery_vs_all_missing": 0.3945428437579636,
+        "damage_vs_clean": 0.02364933490753174,
+        "n_blocks_missing_geo": 18
+      }
+    }
+  },
+  "Q2": {
+    "n_train": 80,
+    "n_test": 80,
+    "cluster_k": 4,
+    "cluster_acc_train": 1.0,
+    "cluster_acc_test": 0.3375000059604645,
+    "cluster_chance": 0.25,
+    "top_sv_cosine_train": 0.9999995231628418,
+    "top_sv_cosine_test": 0.29014530777931213,
+    "translator_clean_miou": 0.48468995094299316,
+    "translator_missing_miou": 0.44289159774780273,
+    "translator_miou": 0.4448818266391754,
+    "translator_recovery": 0.047615007272623563,
+    "n_translator_eval": 80
+  },
+  "Q6": {
+    "n_train": 100,
+    "n_test": 100,
+    "macro_f1": {
+      "clean_probe_on_clean": 0.47480114866048095,
+      "clean_probe_on_missing": 0.46819435637444257,
+      "missing_probe_on_clean": 0.4462134411558509,
+      "missing_probe_on_missing": 0.41477548368275163,
+      "shared_probe_on_clean": 0.43412131499499085,
+      "shared_probe_on_missing": 0.41506112534552814
+    }
+  },
+  "seconds": 217.26737117767334
+}

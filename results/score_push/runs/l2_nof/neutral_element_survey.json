@@ -1,0 +1,19 @@
+{
+  "v2": {
+    "model": "DFormerv2_GeoPriorGen",
+    "neutral_element": "exact zero"
+  },
+  "v1": {
+    "model": "DFormer_v1_Tiny",
+    "n_depth_branch_layers": 51,
+    "n_with_bias": 51,
+    "stage_ratios": [
+      1.0,
+      1.0,
+      1.0000000659933017,
+      1.0
+    ],
+    "depth_sensitivity_rel": 1.846238626189561e-06,
+    "trained_weights": false
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "ckpt": "checkpoints/trained/DFormerv2_Small_NYU.pth",
+  "n_samples": 3,
+  "per_sample": [
+    {
+      "A": {
+        "real_vs_zero": 0.0,
+        "real_vs_random": 0.0,
+        "real_vs_const": 0.0,
+        "bitwise_all_equal": true,
+        "encoder_stage_maxdiffs": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "encoder_bitwise_all_equal": true
+      },
+      "B": {
+        "maxdiff": 0.0,
+        "bitwise_equal": true
+      },
+      "C": {
+        "lam1_real_vs_lam1_zero_maxdiff": 8.449847221374512,
+        "differs": true
+      },
+      "D": {
+        "lam=0.0": 0.0,
+        "lam=0.05": 3.1302871704101562,
+        "lam=0.25": 5.848546028137207,
+        "lam=0.5": 7.125943183898926,
+        "lam=0.75": 8.11655044555664,
+        "lam=1.0": 8.449847221374512
+      }
+    },
+    {
+      "A": {
+        "real_vs_zero": 0.0,
+        "real_vs_random": 0.0,
+        "real_vs_const": 0.0,
+        "bitwise_all_equal": true,
+        "encoder_stage_maxdiffs": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "encoder_bitwise_all_equal": true
+      },
+      "B": {
+        "maxdiff": 0.0,
+        "bitwise_equal": true
+      },
+      "C": {
+        "lam1_real_vs_lam1_zero_maxdiff": 5.222628116607666,
+        "differs": true
+      },
+      "D": {
+        "lam=0.0": 0.0,
+        "lam=0.05": 0.7564296722412109,
+        "lam=0.25": 3.3449506759643555,
+        "lam=0.5": 4.6481170654296875,
+        "lam=0.75": 5.102543354034424,
+        "lam=1.0": 5.222628116607666
+      }
+    },
+    {
+      "A": {
+        "real_vs_zero": 0.0,
+        "real_vs_random": 0.0,
+        "real_vs_const": 0.0,
+        "bitwise_all_equal": true,
+        "encoder_stage_maxdiffs": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "encoder_bitwise_all_equal": true
+      },
+      "B": {
+        "maxdiff": 0.0,
+        "bitwise_equal": true
+      },
+      "C": {
+        "lam1_real_vs_lam1_zero_maxdiff": 7.335578918457031,
+        "differs": true
+      },
+      "D": {
+        "lam=0.0": 0.0,
+        "lam=0.05": 1.0493767261505127,
+        "lam=0.25": 3.643097400665283,
+        "lam=0.5": 4.91420316696167,
+        "lam=0.75": 5.901851654052734,
+        "lam=1.0": 7.335578918457031
+      }
+    }
+  ],
+  "verdict": {
+    "A_single_path_bitwise_logits": true,
+    "A_single_path_bitwise_encoder": true,
+    "B_zerofill_equals_removal_bitwise": true,
+    "C_positive_control_differs": true,
+    "PREMISE_ESTABLISHED": true
+  }
+}

@@ -1,0 +1,46 @@
+# Python dependencies for ugra-rgbd-robust.
+#
+# Versions below are the ones every number in the paper was produced under, captured
+# from the environment that ran them. They are pinned with `>=` on the compatible
+# release rather than `==` so the file installs on a range of CUDA builds; if you need
+# bit-level fidelity, pin to the exact versions in the comments.
+#
+#   Reference environment:  Python 3.10.18, CUDA 12.8, 2x GPU
+#
+# Install:
+#   conda create -n dformer python=3.10 -y && conda activate dformer
+#   pip install -r requirements.txt
+#
+# NOTE ON TORCH: install the build matching your CUDA toolkit FIRST, from
+# https://pytorch.org/get-started/locally/ — e.g. for CUDA 12.8:
+#   pip install torch==2.8.0 torchvision==0.23.0 --index-url https://download.pytorch.org/whl/cu128
+# then run this file. Installing torch from here will pull a default build that may
+# not match your driver.
+
+# --- core ---------------------------------------------------------------------
+torch>=2.1                 # reference: 2.8.0+cu128
+torchvision>=0.16          # reference: 0.23.0+cu128
+numpy>=1.24,<2.0           # reference: 1.26.4  (<2.0: upstream DFormer is not numpy-2 clean)
+
+# --- data, imaging, metrics ---------------------------------------------------
+opencv-python>=4.8         # reference: 4.12.0
+Pillow>=10.0               # reference: 11.3.0
+scipy>=1.11                # reference: 1.15.3
+scikit-learn>=1.3          # reference: 1.7.2   (linear probe in diagnostics/)
+pandas>=2.0                # reference: 2.3.2
+
+# --- model / training utilities ------------------------------------------------
+timm>=1.0                  # reference: 1.0.19
+mmcv>=2.1                  # reference: 2.1.0   (decoder heads in upstream DFormer)
+easydict>=1.10             # upstream DFormer configs are a shared EasyDict
+tensorboard>=2.14          # reference: 2.21.0
+tqdm>=4.65                 # reference: 4.65.2
+
+# --- plotting (diagnostics only) -----------------------------------------------
+matplotlib>=3.5            # reference: 3.5.3
+
+# --- tests ---------------------------------------------------------------------
+pytest>=7.4
+
+# scripts/verify_results.py has NO dependencies beyond the standard library, so the
+# artifact check runs on a bare Python 3.9+ interpreter without installing anything.

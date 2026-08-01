@@ -1,0 +1,12 @@
+{
+  "n_train": 100,
+  "n_test": 100,
+  "macro_f1": {
+    "clean_probe_on_clean": 0.47480114866048095,
+    "clean_probe_on_missing": 0.46819435637444257,
+    "missing_probe_on_clean": 0.4462134411558509,
+    "missing_probe_on_missing": 0.41477548368275163,
+    "shared_probe_on_clean": 0.43412131499499085,
+    "shared_probe_on_missing": 0.41506112534552814
+  }
+}
