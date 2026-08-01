@@ -402,9 +402,9 @@ Please also cite [DFormer](https://github.com/VCIP-RGBD/DFormer) (ICLR 2024),
 [MIT](LICENSE) — matching upstream DFormer, so the patch and everything derived from it
 stay license-compatible.
 
-Third-party components keep their own licenses: **DFormer** (MIT, fetched at setup),
-**GeminiFusion**, and the datasets, which are governed by their respective terms and are
-**not** redistributed here.
+Third-party components keep their own licenses and are **not** redistributed here:
+**DFormer** (MIT, fetched at setup), **GeminiFusion**, and the datasets. See
+[`NOTICE.md`](NOTICE.md).
 
 ---
 

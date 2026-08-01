@@ -19,20 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
--------------------------------------------------------------------------------
-THIRD-PARTY COMPONENTS
-
-This repository does not redistribute the following. They are fetched at setup
-time or must be obtained separately, and remain under their own licenses:
-
-  * DFormer / DFormerv2 -- https://github.com/VCIP-RGBD/DFormer
-    MIT License, Copyright (c) 2023 VCIP-RGBD.
-    patches/dformer-ugra.patch is a derivative work of this codebase and is
-    distributed under the same MIT terms.
-
-  * GeminiFusion -- https://github.com/JiaDingCN/GeminiFusion
-    Used only by diagnostics/gf_fill_sensitivity.py. Not redistributed.
-
-  * NYU Depth v2 and SUN RGB-D datasets, governed by their respective terms.
-    Not redistributed. See docs/DATASETS.md.

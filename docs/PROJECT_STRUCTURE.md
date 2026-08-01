@@ -4,7 +4,8 @@
 ugra-rgbd-robust/
 │
 ├── README.md                    start here
-├── LICENSE                      MIT (+ third-party notices)
+├── LICENSE                      MIT
+├── NOTICE.md                    third-party notices (DFormer, GeminiFusion, datasets)
 ├── CITATION.cff                 ⚠ placeholder author block — must be replaced
 ├── CONTRIBUTING.md
 ├── requirements.txt
