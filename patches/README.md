@@ -8,7 +8,7 @@ this patch or by the eval-only diagnostics that read a model it built.
 | **Upstream** | [`VCIP-RGBD/DFormer`](https://github.com/VCIP-RGBD/DFormer) |
 | **Base commit** | `23cd8f833df12c74af45bc671e75891e48f8ff1b` |
 | **Upstream license** | MIT — this patch is a derivative work under the same terms |
-| **Size** | 907 lines across 5 files |
+| **Size** | +625 / −30 lines across 5 files |
 | **Applied by** | `bash scripts/setup_dformer.sh` |
 | **Verified** | applies cleanly at the base commit, and reproduces the authors' working tree **byte-for-byte** |
 
@@ -25,7 +25,7 @@ keeps this repository small enough to clone in seconds.
 
 ## What it changes, and why
 
-### `models/encoders/DFormerv2.py` (+199)
+### `models/encoders/DFormerv2.py` (+189 / −10)
 
 The core. Depth enters DFormerv2 in exactly one place — an additive term in the attention
 score built from the pairwise depth difference:
@@ -87,12 +87,12 @@ Gated by `C2_ATTEN=1`; **off by default**, so the standard recipe is byte-identi
 `C2_PCLEAN` (default `0.5`) is the probability of keeping α = 1. `E[α]` is matched across
 arms; only ours never reaches 0.
 
-### `utils/train.py` (+219)
+### `utils/train.py` (+215 / −4)
 
 Training-loop wiring: the positional-alpha draw (`POS_ATTEN`, `POS_PCLEAN`,
 `POS_ALPHAMIN`), periodic in-training evaluation (`EVAL_EVERY`), and determinism controls.
 
-### `models/builder.py` (+180) and `utils/engine/engine.py` (+14)
+### `models/builder.py` (+169 / −11) and `utils/engine/engine.py` (+14)
 
 Plumbing to route the auxiliary outputs and diagnostic logging through the existing
 model/engine interfaces without changing their signatures for unpatched callers.

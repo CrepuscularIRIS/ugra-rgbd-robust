@@ -214,7 +214,7 @@ bash scripts/setup_dformer.sh
 bash scripts/setup_dformer.sh --check
 ```
 
-The method is a **907-line patch** against upstream
+The method is a **625-line patch** against upstream
 [`VCIP-RGBD/DFormer`](https://github.com/VCIP-RGBD/DFormer) at commit `23cd8f8`,
 verified to apply cleanly and to reproduce our working tree byte-for-byte. See
 [`patches/README.md`](patches/README.md) for what it changes and why.
@@ -266,7 +266,7 @@ depth gates and the positional control — is documented in
 ```text
 ugra-rgbd-robust/
 ├── patches/
-│   └── dformer-ugra.patch      the method: 907 lines against VCIP-RGBD/DFormer @ 23cd8f8
+│   └── dformer-ugra.patch      the method: +625 lines against VCIP-RGBD/DFormer @ 23cd8f8
 ├── scripts/
 │   ├── setup_dformer.sh        clone + patch + verify upstream          (idempotent)
 │   ├── env.sh                  shared environment contract, sourced by every script

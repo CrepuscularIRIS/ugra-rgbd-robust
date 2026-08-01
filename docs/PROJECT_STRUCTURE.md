@@ -11,7 +11,7 @@ ugra-rgbd-robust/
 ├── requirements.txt
 │
 ├── patches/
-│   ├── dformer-ugra.patch       THE METHOD — 907 lines vs VCIP-RGBD/DFormer @ 23cd8f8
+│   ├── dformer-ugra.patch       THE METHOD — +625 lines vs VCIP-RGBD/DFormer @ 23cd8f8
 │   └── README.md                what it changes, and two defects it deliberately does not fix
 │
 ├── scripts/
