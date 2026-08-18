@@ -1,0 +1,15 @@
+{
+  "arch": "geminifusion",
+  "depth_scale": 5000,
+  "units": "uint16 raw",
+  "fills": {
+    "real": 56.5,
+    "0": 43.61,
+    "2500": 40.13,
+    "5000": 38.56,
+    "10000": 38.3,
+    "15000": 38.24
+  },
+  "spread": 5.37,
+  "zero_fill_miou": 43.61
+}

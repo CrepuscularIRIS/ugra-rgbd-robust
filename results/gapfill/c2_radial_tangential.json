@@ -1,0 +1,35 @@
+{
+  "grid": 8,
+  "n_images": 24,
+  "conditions": {
+    "entire_missing": {
+      "radial": 0.999999982615312,
+      "tangential": 0.0
+    },
+    "depth_constant": {
+      "radial": 0.999999982615312,
+      "tangential": 0.0
+    },
+    "holes_3x0.15": {
+      "radial": 0.12281027863112588,
+      "tangential": 0.42189523329337436
+    },
+    "invalid_0.10": {
+      "radial": 0.14643396778653064,
+      "tangential": 0.3096914906054735
+    },
+    "invalid_0.55": {
+      "radial": 0.6149561939140161,
+      "tangential": 0.4511444481710593
+    },
+    "gaussian_0.15": {
+      "radial": 0.01642397358470286,
+      "tangential": 0.13011453921596208
+    },
+    "depth_flip": {
+      "radial": 0.7738113949696223,
+      "tangential": 0.9588201815883318
+    }
+  },
+  "scalar_canary_max_tangential": 1.7219582263786984e-07
+}

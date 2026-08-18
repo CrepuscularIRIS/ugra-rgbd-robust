@@ -1,0 +1,14 @@
+{
+ "R": {
+  "real": 1.9268061344822247,
+  "spatial_shuffled": 0.250328855899473,
+  "channel_shuffled": 0.07116318020659189,
+  "both_shuffled": 0.0518297462646539
+ },
+ "canary_real": true,
+ "canary_shuffled": true,
+ "shuf_ratio": 0.1299190673205646,
+ "n_eval": 24,
+ "P_M33a": true,
+ "P_M33b": false
+}

@@ -1,0 +1,66 @@
+{
+  "rows": {
+    "DFormerv2|dconst": {
+      "median": 0.7467615485191346,
+      "p10": 0.388627265393734,
+      "p25": 0.552405446767807,
+      "frac_past_1": 0.7790364861488343,
+      "frac_past_2": 0.9991559386253357,
+      "measured_break": 1.5
+    },
+    "DFormerv2|invalid_0.10": {
+      "median": 0.8678485095500946,
+      "p10": 0.5306053787469864,
+      "p25": 0.6842450678348542,
+      "frac_past_1": 0.6751800298690795,
+      "frac_past_2": 0.9985000193119049,
+      "measured_break": 1.5
+    },
+    "DFormerv2|invalid_0.55": {
+      "median": 0.6941963195800781,
+      "p10": 0.40026789009571073,
+      "p25": 0.5296797841787338,
+      "frac_past_1": 0.870104843378067,
+      "frac_past_2": 0.9999017119407654,
+      "measured_break": 1.5
+    },
+    "CMNeXt|constant": {
+      "median": 0.6281001091003418,
+      "p10": 0.3721789985895157,
+      "p25": 0.4850122958421707,
+      "frac_past_1": 0.9175573110580444,
+      "frac_past_2": 0.9999508619308471,
+      "measured_break": Infinity
+    },
+    "CMNeXt|invalid_0.10": {
+      "median": 0.5824384987354279,
+      "p10": 0.33856204748153684,
+      "p25": 0.4631791293621063,
+      "frac_past_1": 0.9684788703918457,
+      "frac_past_2": 0.9999974012374878,
+      "measured_break": Infinity
+    },
+    "CMNeXt|invalid_0.55": {
+      "median": 0.5254870772361755,
+      "p10": 0.29712972939014437,
+      "p25": 0.4144003659486771,
+      "frac_past_1": 0.9876608312129974,
+      "frac_past_2": 1.0,
+      "measured_break": Infinity
+    }
+  },
+  "measured_break": {
+    "DFormerv2|dconst": 1.5,
+    "DFormerv2|invalid_0.10": 1.5,
+    "DFormerv2|invalid_0.55": 1.5,
+    "CMNeXt|constant": Infinity,
+    "CMNeXt|invalid_0.10": Infinity,
+    "CMNeXt|invalid_0.55": Infinity
+  },
+  "eps": 0.001,
+  "P_M19a": false,
+  "P_M19b": true,
+  "P_M19c": false,
+  "P_M19d": false,
+  "n_eval": 10
+}

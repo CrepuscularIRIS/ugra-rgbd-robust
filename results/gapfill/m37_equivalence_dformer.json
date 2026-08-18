@@ -1,0 +1,53 @@
+{
+ "arch": "dformer",
+ "clean_miou": 54.85689128388813,
+ "n_eval": 654,
+ "canary_kl": 0.0,
+ "rows": {
+  "zero(reference)": {
+   "relZ_vs_removal": 0.0,
+   "relZ_vs_clean": 0.0,
+   "kl_vs_reference": 0.0,
+   "miou": 49.948348579863584
+  },
+  "self-comparison": {
+   "relZ_vs_removal": 0.0,
+   "relZ_vs_clean": 0.0,
+   "kl_vs_reference": 0.0,
+   "miou": 49.948348579863584
+  },
+  "const_mean": {
+   "relZ_vs_removal": 0.0,
+   "relZ_vs_clean": 0.0,
+   "kl_vs_reference": 0.0,
+   "miou": 49.948348579863584
+  },
+  "const_q10": {
+   "relZ_vs_removal": 0.0,
+   "relZ_vs_clean": 0.0,
+   "kl_vs_reference": 0.0,
+   "miou": 49.948348579863584
+  },
+  "const_q90": {
+   "relZ_vs_removal": 0.0,
+   "relZ_vs_clean": 0.0,
+   "kl_vs_reference": 0.0,
+   "miou": 49.948348579863584
+  },
+  "const_+1.0": {
+   "relZ_vs_removal": 0.0,
+   "relZ_vs_clean": 0.0,
+   "kl_vs_reference": 0.0,
+   "miou": 49.948348579863584
+  }
+ },
+ "n_equivalent": 4,
+ "n_tested": 4,
+ "equivalent": [
+  "const_mean",
+  "const_q10",
+  "const_q90",
+  "const_+1.0"
+ ],
+ "miou_spread": 0.0
+}

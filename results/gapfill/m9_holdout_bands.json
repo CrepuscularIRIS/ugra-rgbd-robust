@@ -1,0 +1,37 @@
+{
+  "clean_ref": 1.786263570189476,
+  "rows": {
+    "invalid_0.40": {
+      "excess": 0.14378194510936737,
+      "damage": 3.453333333333333,
+      "predicted": "OFF"
+    },
+    "shift_1": {
+      "excess": 0.00011377036571502686,
+      "damage": 0.0033333333333303017,
+      "predicted": "IN"
+    },
+    "shift_8": {
+      "excess": 0.0012355446815490723,
+      "damage": 0.2699999999999984,
+      "predicted": "IN"
+    },
+    "shift_16": {
+      "excess": 0.002955213189125061,
+      "damage": 0.8566666666666668,
+      "predicted": "IN"
+    },
+    "shift_32": {
+      "excess": 0.004591301083564758,
+      "damage": 1.6333333333333304,
+      "predicted": "IN"
+    }
+  },
+  "mid_gap": [],
+  "in_band_spread": 0.0044775307178497314,
+  "in_band_damage_span": 1.6300000000000001,
+  "P_M9a": true,
+  "P_M9b": true,
+  "P_M9c": true,
+  "P_M9d": true
+}

@@ -1,0 +1,139 @@
+{
+  "rows": [
+    {
+      "cond": "invalid_0.10",
+      "family": "sparse-invalid",
+      "damage": 1.8433333333333313,
+      "norm": 2.544358253479004,
+      "maha_excess": 25.34996122603627,
+      "coord": 2.073199510574341
+    },
+    {
+      "cond": "invalid_0.25",
+      "family": "sparse-invalid",
+      "damage": 2.7866666666666666,
+      "norm": 3.2453160285949707,
+      "maha_excess": 47.70146464053414,
+      "coord": 2.6667726039886475
+    },
+    {
+      "cond": "invalid_0.55",
+      "family": "sparse-invalid",
+      "damage": 4.069999999999998,
+      "norm": 3.5957107543945312,
+      "maha_excess": 61.772239621587346,
+      "coord": 2.861570358276367
+    },
+    {
+      "cond": "invalid_0.70",
+      "family": "sparse-invalid",
+      "damage": 4.713333333333334,
+      "norm": 3.5868024826049805,
+      "maha_excess": 61.46439700453345,
+      "coord": 2.7478678226470947
+    },
+    {
+      "cond": "holes_1blob",
+      "family": "compact-holes",
+      "damage": 0.5433333333333318,
+      "norm": 0.8924727439880371,
+      "maha_excess": 1.208006468375629,
+      "coord": 0.19628790020942688
+    },
+    {
+      "cond": "holes_2blob",
+      "family": "compact-holes",
+      "damage": 0.23999999999999963,
+      "norm": 0.6264085173606873,
+      "maha_excess": -0.27769181647920504,
+      "coord": 0.1329490840435028
+    },
+    {
+      "cond": "depth_offset",
+      "family": "pointwise-monotone",
+      "damage": 0.0,
+      "norm": 7.388714584521949e-05,
+      "maha_excess": 0.00014336007780002546,
+      "coord": 1.659680037846556e-06
+    },
+    {
+      "cond": "depth_gain",
+      "family": "pointwise-monotone",
+      "damage": 0.23666666666666458,
+      "norm": 1.0472960472106934,
+      "maha_excess": 1.4782565113659984,
+      "coord": 0.703275203704834
+    },
+    {
+      "cond": "depth_gamma",
+      "family": "pointwise-monotone",
+      "damage": 0.46999999999999886,
+      "norm": 0.5795098543167114,
+      "maha_excess": 6.879354121754091,
+      "coord": 0.09295529127120972
+    },
+    {
+      "cond": "depth_saturate",
+      "family": "pointwise-monotone",
+      "damage": 1.6966666666666679,
+      "norm": 2.273479461669922,
+      "maha_excess": 28.74845743592209,
+      "coord": 1.492143988609314
+    },
+    {
+      "cond": "depth_shift",
+      "family": "spatial-displacement",
+      "damage": 0.07666666666666562,
+      "norm": 0.35166099667549133,
+      "maha_excess": 0.531382755653226,
+      "coord": 0.04706733301281929
+    },
+    {
+      "cond": "salt_pepper",
+      "family": "sparse-impulse",
+      "damage": 2.5333333333333314,
+      "norm": 3.0960190296173096,
+      "maha_excess": 42.116942295173544,
+      "coord": 2.544965982437134
+    },
+    {
+      "cond": "depth_smooth_random",
+      "family": "smooth-random-field",
+      "damage": 6.583333333333333,
+      "norm": 5.039470195770264,
+      "maha_excess": 117.60884412689654,
+      "coord": 4.106424331665039
+    },
+    {
+      "cond": "dconst",
+      "family": "global-degeneracy",
+      "damage": 5.779999999999997,
+      "norm": 3.55470609664917,
+      "maha_excess": 74.100562817178,
+      "coord": 2.517664670944214
+    }
+  ],
+  "singular_values": [
+    7.094743251800537,
+    2.924178123474121,
+    0.854016900062561,
+    0.6757158637046814,
+    0.5339564085006714,
+    0.3182177245616913,
+    0.25834962725639343,
+    0.19030794501304626,
+    0.15813110768795013,
+    0.13850823044776917,
+    0.10931339114904404,
+    0.049197908490896225,
+    0.024816446006298065,
+    1.5915618860162795e-05
+  ],
+  "spearman_norm": 0.9516483516483516,
+  "spearman_maha": 0.9472527472527472,
+  "spearman_coord": 0.9208791208791208,
+  "partial_maha_given_norm": 0.5319210136459611,
+  "P_M1a": true,
+  "P_M1b": false,
+  "P_M1c": true
+}

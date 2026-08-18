@@ -1,0 +1,76 @@
+{
+ "cells": {
+  "S_NYU": {
+   "tag": "S_NYU",
+   "backbone": "DFormerv2_S",
+   "dataset": "NYUDepthv2",
+   "n_classes": 40,
+   "clean_miou": 55.3,
+   "zero_miou": 48.65,
+   "canary_kl": 0.0,
+   "n_equivalent": 4,
+   "n_tested": 4,
+   "miou_spread": 0.0,
+   "n_eval": 654
+  },
+  "L_NYU": {
+   "tag": "L_NYU",
+   "backbone": "DFormerv2_L",
+   "dataset": "NYUDepthv2",
+   "n_classes": 40,
+   "clean_miou": 58.01,
+   "zero_miou": 57.91,
+   "canary_kl": 0.0,
+   "n_equivalent": 4,
+   "n_tested": 4,
+   "miou_spread": 0.0,
+   "n_eval": 654
+  },
+  "S_SUN": {
+   "tag": "S_SUN",
+   "backbone": "DFormerv2_S",
+   "dataset": "SUNRGBD",
+   "n_classes": 37,
+   "clean_miou": 49.03985078356975,
+   "zero_miou": 48.95484583407777,
+   "canary_kl": 0.0,
+   "rows": {
+    "zero(reference)": {
+     "relZ": 0.0,
+     "kl": 0.0,
+     "miou": 48.95484583407777
+    },
+    "self-comparison": {
+     "relZ": 0.0,
+     "kl": 0.0,
+     "miou": 48.95484583407777
+    },
+    "const_mean": {
+     "relZ": 0.0,
+     "kl": 0.0,
+     "miou": 48.95484583407777
+    },
+    "const_q10": {
+     "relZ": 0.0,
+     "kl": 0.0,
+     "miou": 48.95484583407777
+    },
+    "const_q90": {
+     "relZ": 0.0,
+     "kl": 0.0,
+     "miou": 48.95484583407777
+    },
+    "const_+1.0": {
+     "relZ": 0.0,
+     "kl": 0.0,
+     "miou": 48.95484583407777
+    }
+   },
+   "n_equivalent": 4,
+   "n_tested": 4,
+   "miou_spread": 0.0,
+   "n_eval": 654
+  }
+ },
+ "P_M40": true
+}

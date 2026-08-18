@@ -1,0 +1,38 @@
+{
+  "cmnext_removal_s20260801": {
+    "checkpoint": "/home/lingxufeng/workspace/ugra-rgbd-robust/results/removal_dropout/cmnext_removal_s20260801/out/NYU_CMNeXt-B4_id/CMNeXt_CMNeXt-B4_NYU_epoch40_54.78.pth",
+    "clean": 54.78,
+    "zero_in": 51.73,
+    "removal_R": 51.87
+  },
+  "cmnext_removal_s20260802": {
+    "checkpoint": "/home/lingxufeng/workspace/ugra-rgbd-robust/results/removal_dropout/cmnext_removal_s20260802/out/NYU_CMNeXt-B4_id/CMNeXt_CMNeXt-B4_NYU_epoch40_55.12.pth",
+    "clean": 55.12,
+    "zero_in": 52.03,
+    "removal_R": 52.01
+  },
+  "cmnext_removal_s20260803": {
+    "checkpoint": "/home/lingxufeng/workspace/ugra-rgbd-robust/results/removal_dropout/cmnext_removal_s20260803/out/NYU_CMNeXt-B4_id/CMNeXt_CMNeXt-B4_NYU_epoch40_55.13.pth",
+    "clean": 55.13,
+    "zero_in": 51.2,
+    "removal_R": 51.98
+  },
+  "cmnext_zero_s20260801": {
+    "checkpoint": "/home/lingxufeng/workspace/ugra-rgbd-robust/results/removal_dropout/cmnext_zero_s20260801/out/NYU_CMNeXt-B4_id/CMNeXt_CMNeXt-B4_NYU_epoch40_54.2.pth",
+    "clean": 54.2,
+    "zero_in": 52.1,
+    "removal_R": 0.96
+  },
+  "cmnext_zero_s20260802": {
+    "checkpoint": "/home/lingxufeng/workspace/ugra-rgbd-robust/results/removal_dropout/cmnext_zero_s20260802/out/NYU_CMNeXt-B4_id/CMNeXt_CMNeXt-B4_NYU_epoch40_54.4.pth",
+    "clean": 54.4,
+    "zero_in": 52.27,
+    "removal_R": 1.06
+  },
+  "cmnext_zero_s20260803": {
+    "checkpoint": "/home/lingxufeng/workspace/ugra-rgbd-robust/results/removal_dropout/cmnext_zero_s20260803/out/NYU_CMNeXt-B4_id/CMNeXt_CMNeXt-B4_NYU_epoch40_54.41.pth",
+    "clean": 54.41,
+    "zero_in": 52.41,
+    "removal_R": 0.96
+  }
+}

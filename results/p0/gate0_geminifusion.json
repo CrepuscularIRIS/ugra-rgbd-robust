@@ -1,0 +1,11 @@
+{
+  "arch": "geminifusion",
+  "log": "../../results/p0/gate0_geminifusion.log",
+  "reference": 56.8,
+  "measured": 56.5,
+  "delta": -0.3,
+  "images": 654,
+  "verdict": "PASS",
+  "problems": [],
+  "rule": "PASS >= ref-0.5 | INCONCLUSIVE >= ref-1.5 | else FAIL"
+}

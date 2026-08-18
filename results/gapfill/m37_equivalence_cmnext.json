@@ -1,0 +1,48 @@
+{
+ "arch": "cmnext",
+ "clean_miou": 56.30251174278402,
+ "n_eval": 654,
+ "canary_kl": 0.0,
+ "rows": {
+  "zero(reference)": {
+   "relZ_vs_removal": 0.0,
+   "relZ_vs_clean": 0.0,
+   "kl_vs_reference": 0.0,
+   "miou": 51.049783560724485
+  },
+  "self-comparison": {
+   "relZ_vs_removal": 0.0,
+   "relZ_vs_clean": 0.0,
+   "kl_vs_reference": 0.0,
+   "miou": 51.049783560724485
+  },
+  "const_mean": {
+   "relZ_vs_removal": 0.7315077107440148,
+   "relZ_vs_clean": 0.5431292519400744,
+   "kl_vs_reference": 14119.679566176295,
+   "miou": 50.88624348373649
+  },
+  "const_q10": {
+   "relZ_vs_removal": 0.4108907807608346,
+   "relZ_vs_clean": 0.3049774522896255,
+   "kl_vs_reference": 3921.4121755897454,
+   "miou": 51.19041513791831
+  },
+  "const_q90": {
+   "relZ_vs_removal": 0.9970166946893415,
+   "relZ_vs_clean": 0.7395629083680398,
+   "kl_vs_reference": 34263.370361701425,
+   "miou": 50.02265901871776
+  },
+  "const_+1.0": {
+   "relZ_vs_removal": 1.0587892150192568,
+   "relZ_vs_clean": 0.7852290971235684,
+   "kl_vs_reference": 34007.07978694811,
+   "miou": 50.22846721501117
+  }
+ },
+ "n_equivalent": 0,
+ "n_tested": 4,
+ "equivalent": [],
+ "miou_spread": 1.167756119200547
+}
