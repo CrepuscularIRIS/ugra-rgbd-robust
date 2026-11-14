@@ -79,11 +79,11 @@ Facts established from the upstream code (the host adapters encode them):
 * **Not run end to end.** The two patches are applied and syntax-checked, but a full training run needs each upstream's
   own data layout, DDP and (old) mmcv; evaluation under missing depth should go through the host adapters.
 
-**Reproducibility warning for GeminiFusion.** On the DFormer-layout NYU copy, the released B3 checkpoint scores 49.9
-mIoU with real depth and 43.6 with constant depth, versus 56.8 published. The missing-depth score matches Table 2 of
-the paper (43.6); the complete-depth score does not. The released weights were trained on the TokenFusion data layout,
-whose depth is normalised differently, so complete-input numbers for this host should be re-measured on that layout
-before being compared with a missing-input number.
+**Data-layout note for GeminiFusion.** On the DFormer-layout NYU copy the released B3 checkpoint scores 49.9 mIoU
+with real depth and 43.6 with constant depth, versus 56.8 published. The released weights were trained on the
+TokenFusion/GeminiFusion data layout, whose depth is normalised differently, so complete-input scores for this host are
+only comparable when measured on that layout; the authors' ledger records its 56.5 as measured on a GeminiFusion-lineage
+NYU copy. Measure S_c and S_m on the same copy before computing a gap.
 
 ## Tests
 
@@ -91,7 +91,7 @@ before being compared with a missing-input number.
 python -m pytest tests/test_dat_core.py tests/test_gu_geodesic.py tests/test_host_dformer.py -q
 ```
 
-`test_dat_core.py` checks the sampling frequencies, Eq. (2), the partial-mask shapes and the T/B/G identity against a
-Table 1 row. `test_host_dformer.py` builds all seven DFormer models, runs a DAT step, verifies the Sec. 3.1 claim that
+`test_dat_core.py` checks the sampling frequencies, Eq. (2), the partial-mask shapes and the T/B/G identity against
+example endpoints. `test_host_dformer.py` builds all seven DFormer models, runs a DAT step, verifies the Sec. 3.1 claim that
 a constant depth map gives identical DFormerv2 features whatever the constant, and loads the released checkpoint with
 no missing or unexpected keys (skipped when upstream code or weights are absent).
