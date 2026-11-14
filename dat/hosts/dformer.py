@@ -30,6 +30,9 @@ _MODELS = {
     "DFormerv2-L": ("DFormerv2_L", "dformerv2"),
 }
 DATASETS = ("NYUDepthv2", "SUNRGBD")
+# Upstream standardizes depth as (d/255 - 0.48) / 0.28, so an all-zero *raw* depth map is -0.48/0.28 after
+# standardization, while the paper's empty-input constant c = 0 is a mid-grey raw map (0.48 * 255).
+RAW_ZERO = -0.48 / 0.28
 
 
 class DFormerHost(Host):

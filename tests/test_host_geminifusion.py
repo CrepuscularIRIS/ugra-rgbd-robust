@@ -55,7 +55,7 @@ def b3():
 def test_host_metadata_and_registry():
     host = get_host("GeminiFusion-B3")
     assert host.family == "geminifusion" and host.name == "GeminiFusion-B3"
-    assert host.supports_rgb_only is False  # num_parallel = 2, both streams always decoded
+    assert host.supports_rgb_only is True and host.single_stream_mode is False  # constant-depth RGB-only; no 1-stream net
     assert host.empty_value == 0.0  # depth is /255 only and padded with 0 upstream
     assert get_host("GeminiFusion-B5").backbone == "mit_b5"
     with pytest.raises(KeyError):

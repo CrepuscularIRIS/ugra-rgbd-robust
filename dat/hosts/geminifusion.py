@@ -4,9 +4,11 @@ Upstream: https://github.com/JiaDingCN/GeminiFusion (pinned by scripts/setup_gem
 
 Facts about the architecture that shape this adapter (all verified against the pinned commit):
 
-* No single-modality mode. `models/modules.py` hard-wires `num_parallel = 2` and `WeTr.forward`
-  (models/segformer.py) always decodes both streams, so the paper trains no RGB-only baseline for it and
-  reports only the two end points. Hence `supports_rgb_only = False`.
+* No single-stream mode. `models/modules.py` hard-wires `num_parallel = 2` and `WeTr.forward`
+  (models/segformer.py) always decodes both streams, so a network without the depth stream would be a different
+  architecture (`single_stream_mode = False`). The RGB-only baseline of Sec. 3.1 does not need one: it is the same
+  network trained and tested with the constant depth map (`--dat-preset RGB_ONLY`), exactly as for DFormerv1,
+  so `supports_rgb_only = True`.
 * Input is a list `[rgb, depth]`, both (B, 3, H, W). Depth is a grey PNG, replicated to 3 channels
   (utils/datasets.py `read_image`) and scaled by `/255` only (utils/augmentations_mm.py `Normalize`:
   only the "rgb" key gets mean/std). So depth lives in [0, 1] with NO standardization.
@@ -95,7 +97,8 @@ def _strip_ddp_prefix(sd: dict) -> dict:
 class GeminiFusionHost(Host):
     family = "geminifusion"
     empty_value = EMPTY_VALUE
-    supports_rgb_only = False  # num_parallel=2 and both streams are always decoded (see docstring)
+    supports_rgb_only = True  # constant-depth RGB-only, same network (see docstring)
+    single_stream_mode = False  # num_parallel=2 and both streams are always decoded
 
     def __init__(self, name: str, backbone: str):
         self.name, self.backbone = name, backbone

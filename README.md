@@ -50,9 +50,9 @@ GitHub page. Nothing of this kind is stored in the repository.
 | `scripts/retest_official.py` | re-measure the released checkpoints under the single-scale and the official protocol |
 | `tests/` | 34+ unit and integration tests |
 
-GeminiFusion hard-wires two parallel streams and decodes both unconditionally, so it has no single-modality mode: no
-RGB-only baseline can be trained for it and only S_c and S_m are meaningful there. CMNeXt trains an RGB-only baseline as
-the `RGB_ONLY` preset on the full network. Details, the choices the paper does not fix, and the paper-to-code map:
+The RGB-only baseline is the same network trained and tested with the constant depth map, i.e. the `RGB_ONLY` preset;
+it works for every host. GeminiFusion hard-wires two parallel streams, so it has no single-stream mode (a network
+without the depth stream would be a different architecture); CMNeXt does (`modals=['img']`). Details, the choices the paper does not fix, and the paper-to-code map:
 **[`docs/DAT.md`](docs/DAT.md)**.
 
 ## Tests

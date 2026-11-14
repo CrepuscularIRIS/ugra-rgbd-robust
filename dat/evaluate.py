@@ -67,11 +67,15 @@ def predict(host, model, rgb: torch.Tensor, depth: torch.Tensor, scales: Sequenc
 @torch.no_grad()
 def evaluate(host, model, loader, conditions: Sequence[str] = ("complete", "missing"), seed: int = 0,
              limit: int | None = None, device: str = "cuda", ignore_index: int = 255,
-             scales: Sequence[float] = (1.0,), flip: bool = False) -> dict:
+             scales: Sequence[float] = (1.0,), flip: bool = False, empty_value: float | None = None) -> dict:
     """Confusion matrices and mIoU per condition over `loader` (batch size 1, dict batches).
 
     `scales`/`flip` select the inference protocol; the published DFormer numbers use `OFFICIAL_SCALES` + flip.
+    `empty_value` overrides the host's empty-input constant c for the missing/partial conditions: 0 is zero *after*
+    standardization (the paper's definition); `dat.hosts.dformer.RAW_ZERO` is an all-zero raw depth map *before*
+    standardization. They coincide for DFormerv2 (any constant removes the depth term) but not for DFormerv1.
     """
+    c = host.empty_value if empty_value is None else empty_value
     k = host.num_classes
     hists = {c: torch.zeros(k, k, dtype=torch.long, device=device) for c in conditions}
     model.eval()
@@ -81,7 +85,7 @@ def evaluate(host, model, loader, conditions: Sequence[str] = ("complete", "miss
             break
         rgb, depth, label = b["data"].to(device), b["modal_x"].to(device), b["label"].to(device)
         for cond in conditions:
-            pred = predict(host, model, rgb, condition_input(depth, cond, host.empty_value, seed + i), scales,
+            pred = predict(host, model, rgb, condition_input(depth, cond, c, seed + i), scales,
                            flip).argmax(1)
             keep = label != ignore_index
             hists[cond] += torch.bincount(label[keep] * k + pred[keep], minlength=k * k).view(k, k)
@@ -104,6 +108,7 @@ def main(argv=None):
     ap.add_argument("--partial", type=float, action="append", default=[], help="also evaluate partial depth")
     ap.add_argument("--protocol", default="single", choices=("single", "official"),
                     help="single: one scale, no flip; official: scales 0.5-1.5 + flip, as upstream infer.py")
+    ap.add_argument("--empty-value", type=float, help="override c (default: the host's; see evaluate())")
     ap.add_argument("--limit", type=int)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--device", default="cuda")
@@ -120,6 +125,7 @@ def main(argv=None):
     model = host.build(device=a.device)
     host.load_weights(model, a.ckpt)
     kw = dict(scales=OFFICIAL_SCALES, flip=True) if a.protocol == "official" else {}
+    kw["empty_value"] = a.empty_value
     res = evaluate(host, model, loader, conds, a.seed, a.limit, a.device, **kw)
     s_rgb = a.s_rgb
     if a.rgb_only_ckpt:

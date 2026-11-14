@@ -36,6 +36,7 @@ def _unwrap(ckpt: dict) -> dict:
 class CMNeXtHost(Host):
     family = "cmnext"
     empty_value = 0.0  # HHA / 255, zero-padded by upstream; no mean/std (module docstring)
+    single_stream_mode = True  # modals=['img'] builds the depth-free network
 
     def __init__(self, variant: str):
         if variant not in VARIANTS:

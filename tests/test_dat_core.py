@@ -111,7 +111,7 @@ def test_tbg_identity_on_example_endpoints():
     assert round(e.t, 1) == -4.0 and round(e.g, 1) == 6.9 and round(e.b, 1) == 2.9
     d = metrics.Endpoints(s_c=56.6, s_m=56.1, s_rgb=53.1)
     assert round(d.t, 1) == 3.0 and round(d.s_m - e.s_m, 1) == 7.0
-    assert metrics.Endpoints(56.5, 43.6).t is None  # no RGB-only baseline: T is undefined
+    assert metrics.Endpoints(56.5, 43.6).t is None  # T is undefined until an RGB-only score is supplied
 
 
 def test_iou_from_confusion_matrix_and_classwise_delta():

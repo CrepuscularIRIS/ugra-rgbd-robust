@@ -94,7 +94,8 @@ cat <<EOF
 $(log "GeminiFusion is ready at $GEMINIFUSION_ROOT")
 
 Notes:
-  * GeminiFusion has no single-modality mode (num_parallel = 2); there is no RGB-only arm.
+  * GeminiFusion has no single-stream mode (num_parallel = 2), but the RGB-only baseline of the paper (constant depth
+    in training and testing) works: --dat-preset RGB_ONLY.
   * Train: python -m torch.distributed.launch --nproc_per_node=3 --use_env main.py \\
              --backbone mit_b3 --dataset nyudv2 -c <name> --dat-preset DAT   (see upstream README)
   * Released NYU checkpoints load through dat.hosts.get_host("GeminiFusion-B3").load_weights(...)

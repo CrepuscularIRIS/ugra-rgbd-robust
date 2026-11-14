@@ -59,7 +59,7 @@ steps of the paper; fp32 is the default because reduced precision is unstable fo
 |---|---|---|
 | DFormerv1 / v2 | yes: constant depth in training and testing | `dat.train` (this repo) |
 | CMNeXt-B2/B4/B5 | yes, as the paper defines it: the `RGB_ONLY` preset on the full RGB-D network (constant depth). `modals=['img']` also builds, but it is a different network without the depth branch | `patches/cmnext-dat.patch` (`tools/train_mm.py`), `scripts/setup_cmnext.sh` |
-| GeminiFusion-B3/B5 | **no**: `num_parallel = 2` is hard-wired and both streams are decoded unconditionally, so only S_c and S_m are reported and T is undefined | `patches/geminifusion-dat.patch` (`main.py`), `scripts/setup_geminifusion.sh` |
+| GeminiFusion-B3/B5 | yes, as the paper defines it: `--dat-preset RGB_ONLY` (constant depth in training and testing). It has no single-stream mode: `num_parallel = 2` is hard-wired and both streams are decoded unconditionally, so a network without the depth stream would be a different architecture | `patches/geminifusion-dat.patch` (`main.py`), `scripts/setup_geminifusion.sh` |
 
 Both patches add one flag (`--dat-preset`, default off, so conventional training is unchanged) and replace only the
 depth tensor after it is moved to the GPU; neither touches the loss. `bash scripts/setup_cmnext.sh` /

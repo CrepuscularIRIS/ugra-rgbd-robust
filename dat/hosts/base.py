@@ -18,7 +18,9 @@ class Host(ABC):
     name: str  # e.g. "DFormerv2-S"
     family: str  # "dformerv1" | "dformerv2" | "cmnext" | "geminifusion"
     empty_value: float  # c in D~ = M*D + (1-M)*c
-    supports_rgb_only: bool = True  # False when the architecture has no single-modality mode
+    supports_rgb_only: bool = True  # the constant-depth RGB-only baseline of Sec. 3.1 can be trained (same network,
+    #                                 depth replaced by the empty-input constant in training and testing)
+    single_stream_mode: bool = False  # the architecture can also run with no depth stream at all (a different network)
 
     @abstractmethod
     def build(self, num_classes: int = 40, device: str = "cuda") -> nn.Module:

@@ -1,8 +1,8 @@
 diff --git a/main.py b/main.py
-index c896562..3cc538e 100644
+index c896562..948b3db 100644
 --- a/main.py
 +++ b/main.py
-@@ -189,6 +189,14 @@ def get_arguments():
+@@ -189,6 +189,15 @@ def get_arguments():
      parser.add_argument("--lr_2", default=1.5e-5, type=float)
      parser.add_argument("--is_pretrain_finetune", action="store_true")
  
@@ -11,13 +11,14 @@ index c896562..3cc538e 100644
 +        "--dat-preset",
 +        default=None,
 +        type=str,
-+        help="DAT mixture preset (e.g. DAT, C); only the depth input is changed.",
++        help="DAT mixture preset (e.g. DAT, C, RGB_ONLY); only the depth input is changed. RGB_ONLY trains with the "
++        "constant depth map (the same network never sees depth); evaluate it with constant depth.",
 +    )
 +
      return parser.parse_args()
  
  
-@@ -357,6 +365,7 @@ def train(
+@@ -357,6 +366,7 @@ def train(
      segm_crit,
      freeze_bn,
      print_loss=False,
@@ -25,7 +26,7 @@ index c896562..3cc538e 100644
  ):
      """Training segmenter
  
-@@ -383,6 +392,9 @@ def train(
+@@ -383,6 +393,9 @@ def train(
          start = time.time()
          inputs = [sample[key].cuda().float() for key in input_types]
          target = sample["mask"].cuda().long()
@@ -35,7 +36,7 @@ index c896562..3cc538e 100644
          # Compute outputs
          outputs, masks = segmenter(inputs)
          loss = 0
-@@ -554,6 +566,24 @@ def main():
+@@ -554,6 +567,22 @@ def main():
          else:
              print_log("=> no checkpoint found at '{}'".format(args.resume))
              return
@@ -49,8 +50,6 @@ index c896562..3cc538e 100644
 +        from dat.availability import AvailabilitySampler
 +        from dat.hosts.geminifusion import EMPTY_VALUE
 +
-+        if args.dat_preset == "RGB_ONLY":
-+            raise ValueError("GeminiFusion has no single-modality mode; no RGB-only arm")
 +        rank = dist.get_rank() if dist.is_initialized() else 0
 +        dat_sampler = AvailabilitySampler(
 +            c=EMPTY_VALUE,
@@ -60,7 +59,7 @@ index c896562..3cc538e 100644
      no_ddp_segmenter = segmenter
      segmenter = DDP(
          segmenter, device_ids=[gpu], output_device=0, find_unused_parameters=False
-@@ -646,6 +676,7 @@ def main():
+@@ -646,6 +675,7 @@ def main():
                  segm_crit,
                  args.freeze_bn,
                  args.print_loss,
