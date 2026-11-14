@@ -1,0 +1,23 @@
+# third-party checkouts (cloned by scripts/setup_*.sh), data and anything produced by a run
+repos/
+data/
+datasets/
+runs/
+.deps/
+
+# weights, tensors, archives
+*.pth
+*.pth.tar
+*.pt
+*.ckpt
+*.safetensors
+*.npz
+*.zip
+
+# python / editors / OS
+__pycache__/
+*.pyc
+.pytest_cache/
+.idea/
+.vscode/
+.DS_Store

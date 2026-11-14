@@ -1,0 +1,60 @@
+diff --git a/tools/train_mm.py b/tools/train_mm.py
+index 2cc5136..db0ad3c 100644
+--- a/tools/train_mm.py
++++ b/tools/train_mm.py
+@@ -1,4 +1,5 @@
+ import os
++import sys
+ import torch 
+ import argparse
+ import yaml
+@@ -23,7 +24,7 @@ from semseg.utils.utils import fix_seeds, setup_cudnn, cleanup_ddp, setup_ddp, g
+ from val_mm import evaluate
+ 
+ 
+-def main(cfg, gpu, save_dir):
++def main(cfg, gpu, save_dir, dat_sampler=None):
+     start = time.time()
+     best_mIoU = 0.0
+     best_epoch = 0
+@@ -101,6 +102,8 @@ def main(cfg, gpu, save_dir):
+             optimizer.zero_grad(set_to_none=True)
+             sample = [x.to(device) for x in sample]
+             lbl = lbl.to(device)
++            if dat_sampler is not None:  # DAT: only the depth input changes (D~ = M*D + (1-M)*c); rgb, label, loss untouched
++                sample[1], _ = dat_sampler(sample[1])
+             
+             with autocast(enabled=train_cfg['AMP']):
+                 logits = model(sample)
+@@ -166,6 +169,9 @@ def main(cfg, gpu, save_dir):
+ if __name__ == '__main__':
+     parser = argparse.ArgumentParser()
+     parser.add_argument('--cfg', type=str, default='configs/deliver_rgbdel.yaml', help='Configuration file to use')
++    parser.add_argument('--dat-preset', type=str, default=None, help='depth-availability training preset from dat.presets (e.g. DAT, RGB_ONLY); default: off, conventional training')
++    parser.add_argument('--dat-c', type=float, default=0.0, help='empty-depth constant c; 0 = zero HHA/255, upstream padding value')
++    parser.add_argument('--dat-seed', type=int, default=0, help='seed of the availability sampler (offset by the rank)')
+     args = parser.parse_args()
+ 
+     with open(args.cfg) as f:
+@@ -177,10 +183,19 @@ if __name__ == '__main__':
+     modals = ''.join([m[0] for m in cfg['DATASET']['MODALS']])
+     model = cfg['MODEL']['BACKBONE']
+     exp_name = '_'.join([cfg['DATASET']['NAME'], model, modals])
++    dat_sampler = None
++    if args.dat_preset is not None:
++        assert cfg['DATASET']['MODALS'][:2] == ['img', 'depth'], 'DAT needs MODALS: [img, depth]'
++        sys.path.insert(0, os.environ['UGRA_ROOT'])  # the ugra-rgbd-robust checkout that holds the dat package
++        from dat.availability import AvailabilitySampler
++        from dat.presets import get as get_preset
++        dat_sampler = AvailabilitySampler(c=args.dat_c, mixture=get_preset(args.dat_preset), seed=args.dat_seed + int(os.environ.get('RANK', 0)))
++        exp_name += '_dat-' + args.dat_preset.lower()
+     save_dir = Path(cfg['SAVE_DIR'], exp_name)
+     if os.path.isfile(cfg['MODEL']['RESUME']):
+         save_dir =  Path(os.path.dirname(cfg['MODEL']['RESUME']))
+     os.makedirs(save_dir, exist_ok=True)
+     logger = get_logger(save_dir / 'train.log')
+-    main(cfg, gpu, save_dir)
++    if dat_sampler is not None: logger.info(f'DAT: preset={args.dat_preset} mixture={dat_sampler.mixture.as_tuple()} c={args.dat_c}')
++    main(cfg, gpu, save_dir, dat_sampler)
+     cleanup_ddp()
+\ No newline at end of file
