@@ -103,13 +103,15 @@ def test_test_time_conditions():
     assert 0.2 < removed < 0.3 and torch.equal(p, av.partial_depth(depth, 0.0, 0.25, "rect", 5))
 
 
-def test_tbg_identity_and_the_papers_dformerv2_s_nyu_row():
-    e = metrics.Endpoints(s_c=56.0, s_m=49.1, s_rgb=53.1)  # Table 1, conventional training
+def test_tbg_identity_on_example_endpoints():
+    """Arithmetic fixtures only: the numbers are the ones printed in the manuscript's Table 1, used here to check
+    the T/B/G formulas. They are NOT measurements of this repository (see scripts/retest_official.py for those)."""
+    e = metrics.Endpoints(s_c=56.0, s_m=49.1, s_rgb=53.1)
     e.check_identity()
     assert round(e.t, 1) == -4.0 and round(e.g, 1) == 6.9 and round(e.b, 1) == 2.9
-    d = metrics.Endpoints(s_c=56.6, s_m=56.1, s_rgb=53.1)  # Table 1, DAT
-    assert round(d.t, 1) == 3.0 and round(d.s_m - e.s_m, 1) == 7.0  # "7.0 points above C"
-    assert metrics.Endpoints(56.5, 43.6).t is None  # GeminiFusion: no RGB-only baseline
+    d = metrics.Endpoints(s_c=56.6, s_m=56.1, s_rgb=53.1)
+    assert round(d.t, 1) == 3.0 and round(d.s_m - e.s_m, 1) == 7.0
+    assert metrics.Endpoints(56.5, 43.6).t is None  # no RGB-only baseline: T is undefined
 
 
 def test_iou_from_confusion_matrix_and_classwise_delta():
